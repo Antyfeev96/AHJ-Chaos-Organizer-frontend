@@ -39,34 +39,24 @@ body {
       &__buttons {
         display: flex;
 
-        :nth-child(n) {
-          width: 16px;
-          height: 16px;
-          color: white;
-        }
-
-        :nth-child(n):hover {
-          cursor: pointer;
-          color: red;
-        }
-
         :nth-child(n + 2) {
           margin-left: 10px;
         }
-      
-        // #search {
-        //   background: url('/src/images/loupe.png') no-repeat;
-        // }
+      }
 
-        // #switch {
-        //   background: url('/src/images/menu.png') no-repeat;
-        // }
+      &__icon {
+        width: 16px;
+        height: 16px;
+        fill: grey;
+      }
 
-        // #settings {
-        //   background: url('/src/images/settings.svg') no-repeat;
-        //   width: 16px;
-        //   height: 16px;
-        // }
+      &__icon:hover {
+        cursor: pointer;
+        fill: black;
+      }
+
+      &__icon_focus {
+        fill: blue;
       }
     }
 
