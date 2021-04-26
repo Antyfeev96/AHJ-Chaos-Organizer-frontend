@@ -123,6 +123,11 @@ body {
     &__exit {
       color: grey;
       font-size: 26px;
+
+      &:hover {
+        cursor: pointer;
+        color: black;
+      }
     }
 
     &__files {
