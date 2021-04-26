@@ -25,7 +25,7 @@ body {
 
   .main {
     width: 70%;
-    border-right: 1px solid rgb(212, 209, 209);
+    border-right: 2px solid rgb(212, 209, 209);
 
     .header {
       display: flex;
@@ -99,6 +99,7 @@ body {
 
   .section {
     width: 30%;
+    background-color: rgb(252, 248, 248);
 
     &__header {
       display: flex;
@@ -108,6 +109,7 @@ body {
       font-size: 16px;
       padding: 15px;
       height: 10%;
+      background-color: white;
     }
 
     &__exit {
@@ -116,7 +118,31 @@ body {
     }
 
     &__files {
-      height: 45%;
+      padding: 15px;
+      padding-top: 20px;
+      height: fit-content;
+      background-color: white;
+      // border-bottom: 2px solid rgb(212, 209, 209);
+      box-shadow: 0 1px 1px grey;
+
+      .file {
+        display: flex;
+        align-items: center;
+        margin-left: 15px;
+
+        &:nth-of-type(n + 2) {
+          margin-top: 15px;
+        }
+
+        &__icon {
+          width: 16px;
+          height: 16px;
+        }
+
+        &__quantity {
+          margin-left: 30px;
+        }
+      }
     }
   }
 }
