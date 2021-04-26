@@ -25,7 +25,7 @@ body {
 
   .main {
     width: 70%;
-    // border-right: 1px solid grey;
+    border-right: 1px solid rgb(212, 209, 209);
 
     .header {
       display: flex;
@@ -61,22 +61,62 @@ body {
     }
 
     .content {
-      height: 80%;
-      background-color: rgb(224, 166, 57);
+      height: 83%;
+      background: url('../images/background.jpg') no-repeat;
+      background-size: cover;
     }
 
-    .input {
-      height: 10%;
-      background-color: green;
+    .message {
+      display: flex;
+      align-items: center;
+      height: 7%;
+      padding: 10px;
+
+      &__paperclip {
+        width: 16px;
+        height: 16px;
+      }
+
+      input {
+        margin-left: 15px;
+        width: 90%;
+      }
+
+      &__buttons {
+        display: flex;
+      }
+
+      &__icon {
+        width: 16px;
+        height: 16px;
+
+        &:nth-of-type(even) {
+          margin-left: 20px;
+        }
+      }
     }
   }
 
   .section {
     width: 30%;
 
-    .shared-files {
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      font-size: 16px;
+      padding: 15px;
+      height: 10%;
+    }
+
+    &__exit {
+      color: grey;
+      font-size: 26px;
+    }
+
+    &__files {
       height: 45%;
-      background-color: rgb(173, 43, 43);
     }
   }
 }
