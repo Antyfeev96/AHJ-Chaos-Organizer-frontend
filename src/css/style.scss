@@ -44,19 +44,19 @@ body {
         }
       }
 
-      &__icon {
+      .icon {
         width: 16px;
         height: 16px;
-        fill: grey;
-      }
+        fill: rgb(90, 87, 87);
 
-      &__icon:hover {
-        cursor: pointer;
-        fill: black;
-      }
-
-      &__icon_focus {
-        fill: blue;
+        &:hover  {
+          cursor: pointer;
+          fill: black;
+        }
+  
+        &_focus {
+          fill: blue;
+        }
       }
     }
 
@@ -64,6 +64,7 @@ body {
       height: 83%;
       background: url('../images/background.jpg') no-repeat;
       background-size: cover;
+      overflow-y: hidden;
     }
 
     .message {
@@ -80,15 +81,22 @@ body {
       input {
         margin-left: 15px;
         width: 90%;
+        outline: none;
       }
 
       &__buttons {
         display: flex;
       }
 
-      &__icon {
-        width: 16px;
-        height: 16px;
+      .icon {
+        width: 26px;
+        height: 26px;
+        fill: rgb(90, 87, 87);
+
+        &:hover {
+          cursor: pointer;
+          fill: black;
+        }
 
         &:nth-of-type(even) {
           margin-left: 20px;
@@ -122,7 +130,6 @@ body {
       padding-top: 20px;
       height: fit-content;
       background-color: white;
-      // border-bottom: 2px solid rgb(212, 209, 209);
       box-shadow: 0 1px 1px grey;
 
       .file {
@@ -134,13 +141,25 @@ body {
           margin-top: 15px;
         }
 
-        &__icon {
-          width: 16px;
-          height: 16px;
+        .icon {
+          width: 25px;
+          height: 25px;
+          justify-self: start;
+          fill: rgb(90, 87, 87);
+
+          &:hover {
+            fill: black;
+            cursor: pointer;
+          }
         }
 
         &__quantity {
           margin-left: 30px;
+
+          &:hover {
+            cursor: pointer;
+            font-weight: bold;
+          }
         }
       }
     }

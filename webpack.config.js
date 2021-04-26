@@ -25,7 +25,7 @@ module.exports = {
     new ESLintPlugin(),
     new CopyPlugin({
       patterns: [
-        { from: './src', to: './' },
+        { from: './src', to: './src' },
       ],
     }),
   ],
