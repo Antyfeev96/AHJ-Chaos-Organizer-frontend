@@ -60,14 +60,47 @@ body {
       }
     }
 
-    .content {
+    .chat {
+      padding: 10px;
       height: 83%;
       background: url('../images/background.jpg') no-repeat;
       background-size: cover;
-      overflow-y: hidden;
+
+      .message {
+        padding: 15px;
+        margin-left: auto;
+        margin-right: 0;
+        width: 400px;
+        height: fit-content;
+        background-color: rgb(202, 247, 181);
+        border: 1px solid rgb(202, 247, 181);
+        border-radius: 10px;
+
+        &__content {
+          text-align: justify;
+        }
+
+        &__status {
+          display: flex;
+          margin-top: 5px;
+          justify-content: flex-end;
+          align-items: center;
+        }
+
+        &__timestamp {
+          color: rgb(24, 189, 9);
+        }
+
+        .icon {
+          margin-left: 5px;
+          width: 16px;
+          height: 16px;
+          fill: rgb(24, 189, 9);
+        }
+      }
     }
 
-    .message {
+    .input-box {
       display: flex;
       align-items: center;
       height: 7%;
