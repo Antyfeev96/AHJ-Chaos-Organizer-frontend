@@ -29,6 +29,8 @@ export default class GUI {
     this.createHeaderTitle();
     this.createHeaderButtons();
     this.createLoupe();
+    this.createView();
+    this.createSettings();
     this.mainEl.append(this.headerEl);
   }
 
@@ -57,5 +59,13 @@ export default class GUI {
 
   createLoupe() {
     this.headerButtonsEl.append(this.svg.createLoupe());
+  }
+
+  createView() {
+    this.headerButtonsEl.append(this.svg.createView());
+  }
+
+  createSettings() {
+    this.headerButtonsEl.append(this.svg.createSettings());
   }
 }
