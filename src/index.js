@@ -1,3 +1,2 @@
+import './js/App';
 import './css/style.scss';
-
-console.log('Hello Mishgangsta!');

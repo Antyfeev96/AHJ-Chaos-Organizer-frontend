@@ -9,18 +9,11 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-body {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-  justify-content: center;
-  align-items: center;
-}
-
 .container {
   display: flex;
-  min-width: 1000px;
+  width: 1000px;
   height: 600px;
+  margin: 25px auto;
   border: 1px solid rgb(197, 191, 185);
 
   .main {
@@ -54,7 +47,7 @@ body {
           fill: black;
         }
   
-        &_focus {
+        &.focus {
           fill: blue;
         }
       }
@@ -202,4 +195,8 @@ body {
       }
     }
   }
+}
+
+.licenses {
+  text-align: center;
 }
