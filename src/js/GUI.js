@@ -50,7 +50,42 @@ export default class GUI {
   createChat() {
     this.chatEl = document.createElement('div');
     this.chatEl.className = 'chat';
+    this.createMessage();
     this.mainEl.append(this.chatEl);
+  }
+
+  createMessage() {
+    this.messageEl = document.createElement('div');
+    this.messageEl.className = 'message';
+    this.messageEl.append(
+      this.createMessageContent('Hello!'),
+      this.createMessageStatus(),
+    );
+    this.chatEl.append(this.messageEl);
+  }
+
+  createMessageContent(text) {
+    this.messageContentEl = document.createElement('div');
+    this.messageContentEl.className = 'message__content';
+    this.messageContentEl.textContent = text;
+    return this.messageContentEl;
+  }
+
+  createMessageStatus() {
+    this.messageStatusEl = document.createElement('div');
+    this.messageStatusEl.className = 'message__status';
+    this.messageStatusEl.append(
+      this.createMessageTimestamp('23:17'),
+      this.createCheck(),
+    );
+    return this.messageStatusEl;
+  }
+
+  createMessageTimestamp(time) {
+    this.messageTimestampEl = document.createElement('div');
+    this.messageTimestampEl.className = 'message__timestamp';
+    this.messageTimestampEl.textContent = time;
+    return this.messageTimestampEl;
   }
 
   createInputBox() {
@@ -67,5 +102,9 @@ export default class GUI {
 
   createSettings() {
     this.headerButtonsEl.append(this.svg.createSettings());
+  }
+
+  createCheck() {
+    return this.svg.createCheck();
   }
 }

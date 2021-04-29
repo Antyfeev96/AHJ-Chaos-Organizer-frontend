@@ -61,4 +61,20 @@ export default class SVG {
     this.svg.append(this.path1, this.path2, this.path3);
     return this.svg;
   }
+
+  createCheck() {
+    this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    this.path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+
+    this.svg.setAttribute('class', 'icon');
+    this.svg.id = 'check';
+    this.svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    this.svg.setAttribute('viewBox', '0 0 512 512');
+
+    this.path.setAttribute('d', `m473.074 120.729-203.295 203.296-21.212-21.212 153.765-153.764-38.926-38.926-153.765
+     153.765-61.047-61.047-38.926 38.926 61.047 61.047-21.211 21.211-110.578-110.577-38.926 
+     38.926 149.503 149.503 60.138-60.137 60.137 60.137 242.222-242.221z`);
+    this.svg.append(this.path);
+    return this.svg;
+  }
 }
