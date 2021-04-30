@@ -5,14 +5,17 @@ export default class GUI {
   }
 
   init() {
-    this.createContainer();
+    this.body.append(this.createContainer());
   }
 
   createContainer() {
     this.containerEl = document.createElement('div');
     this.containerEl.className = 'container';
-    this.createMain();
-    this.body.append(this.containerEl);
+    this.containerEl.append(
+      this.createMain(),
+      this.createSection(),
+    );
+    return this.containerEl;
   }
 
   createMain() {
@@ -23,7 +26,7 @@ export default class GUI {
       this.createChat(),
       this.createInputBox(),
     );
-    this.containerEl.append(this.mainEl);
+    return this.mainEl;
   }
 
   createHeader() {
@@ -122,6 +125,12 @@ export default class GUI {
       this.createMicrophone(),
     );
     return this.inputButtonsEl;
+  }
+
+  createSection() {
+    this.sectionEl = document.createElement('section');
+    this.sectionEl.className = 'section';
+    return this.sectionEl;
   }
 
   createLoupe() {
