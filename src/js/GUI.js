@@ -12,46 +12,53 @@ export default class GUI {
     this.containerEl = document.createElement('div');
     this.containerEl.className = 'container';
     this.createMain();
-    this.createChat();
     this.body.append(this.containerEl);
   }
 
   createMain() {
     this.mainEl = document.createElement('main');
     this.mainEl.className = 'main';
-    this.createHeader();
+    this.mainEl.append(
+      this.createHeader(),
+      this.createChat(),
+      this.createInputBox(),
+    );
     this.containerEl.append(this.mainEl);
   }
 
   createHeader() {
     this.headerEl = document.createElement('header');
     this.headerEl.className = 'header';
-    this.createHeaderTitle();
-    this.createHeaderButtons();
-    this.createLoupe();
-    this.createView();
-    this.createSettings();
-    this.mainEl.append(this.headerEl);
+    this.headerEl.append(
+      this.createHeaderTitle(),
+      this.createHeaderButtons(),
+    );
+    return this.headerEl;
   }
 
   createHeaderTitle() {
     this.headerTitleEl = document.createElement('div');
     this.headerTitleEl.className = 'header__title';
     this.headerTitleEl.textContent = 'Saved messages';
-    this.headerEl.append(this.headerTitleEl);
+    return this.headerTitleEl;
   }
 
   createHeaderButtons() {
     this.headerButtonsEl = document.createElement('div');
     this.headerButtonsEl.className = 'header__buttons';
-    this.headerEl.append(this.headerButtonsEl);
+    this.headerButtonsEl.append(
+      this.createLoupe(),
+      this.createView(),
+      this.createSettings(),
+    );
+    return this.headerButtonsEl;
   }
 
   createChat() {
     this.chatEl = document.createElement('div');
     this.chatEl.className = 'chat';
-    this.createMessage();
-    this.mainEl.append(this.chatEl);
+    this.chatEl.append(this.createMessage());
+    return this.chatEl;
   }
 
   createMessage() {
@@ -61,7 +68,7 @@ export default class GUI {
       this.createMessageContent('Hello!'),
       this.createMessageStatus(),
     );
-    this.chatEl.append(this.messageEl);
+    return this.messageEl;
   }
 
   createMessageContent(text) {
@@ -89,22 +96,59 @@ export default class GUI {
   }
 
   createInputBox() {
-    this.a = 123;
+    this.inputBoxEl = document.createElement('div');
+    this.inputBoxEl.className = 'input-box';
+    this.inputBoxEl.append(
+      this.createPaperclip(),
+      this.createInputEl(),
+      this.createInputButtons(),
+    );
+    return this.inputBoxEl;
+  }
+
+  createInputEl() {
+    this.inputEl = document.createElement('input');
+    this.inputEl.className = 'input-box__input';
+    this.inputEl.placeholder = 'Write a message...';
+    this.inputEl.type = 'text';
+    return this.inputEl;
+  }
+
+  createInputButtons() {
+    this.inputButtonsEl = document.createElement('div');
+    this.inputButtonsEl.className = 'input-box__buttons';
+    this.inputButtonsEl.append(
+      this.createSmile(),
+      this.createMicrophone(),
+    );
+    return this.inputButtonsEl;
   }
 
   createLoupe() {
-    this.headerButtonsEl.append(this.svg.createLoupe());
+    return this.svg.createLoupe();
   }
 
   createView() {
-    this.headerButtonsEl.append(this.svg.createView());
+    return this.svg.createView();
   }
 
   createSettings() {
-    this.headerButtonsEl.append(this.svg.createSettings());
+    return this.svg.createSettings();
   }
 
   createCheck() {
     return this.svg.createCheck();
+  }
+
+  createPaperclip() {
+    return this.svg.createPaperclip();
+  }
+
+  createSmile() {
+    return this.svg.createSmile();
+  }
+
+  createMicrophone() {
+    return this.svg.createMicrophone();
   }
 }
