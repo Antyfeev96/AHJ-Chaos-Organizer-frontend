@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 export default class GUI {
   constructor(svg) {
     this.body = document.body;
@@ -50,9 +51,9 @@ export default class GUI {
     this.headerButtonsEl = document.createElement('div');
     this.headerButtonsEl.className = 'header__buttons';
     this.headerButtonsEl.append(
-      this.createLoupe(),
-      this.createView(),
-      this.createSettings(),
+      this.svg.createLoupe(),
+      this.svg.createView(),
+      this.svg.createSettings(),
     );
     return this.headerButtonsEl;
   }
@@ -86,7 +87,7 @@ export default class GUI {
     this.messageStatusEl.className = 'message__status';
     this.messageStatusEl.append(
       this.createMessageTimestamp('23:17'),
-      this.createCheck(),
+      this.svg.createCheck(),
     );
     return this.messageStatusEl;
   }
@@ -102,7 +103,7 @@ export default class GUI {
     this.inputBoxEl = document.createElement('div');
     this.inputBoxEl.className = 'input-box';
     this.inputBoxEl.append(
-      this.createPaperclip(),
+      this.svg.createPaperclip(),
       this.createInputEl(),
       this.createInputButtons(),
     );
@@ -121,8 +122,8 @@ export default class GUI {
     this.inputButtonsEl = document.createElement('div');
     this.inputButtonsEl.className = 'input-box__buttons';
     this.inputButtonsEl.append(
-      this.createSmile(),
-      this.createMicrophone(),
+      this.svg.createSmile(),
+      this.svg.createMicrophone(),
     );
     return this.inputButtonsEl;
   }
@@ -130,34 +131,101 @@ export default class GUI {
   createSection() {
     this.sectionEl = document.createElement('section');
     this.sectionEl.className = 'section';
+    this.sectionEl.append(
+      this.createSectionHeader(),
+      this.createSectionFiles(),
+    );
     return this.sectionEl;
   }
 
-  createLoupe() {
-    return this.svg.createLoupe();
+  createSectionHeader() {
+    this.sectionHeaderEl = document.createElement('div');
+    this.sectionHeaderEl.className = 'section__header';
+    this.sectionHeaderEl.append(
+      this.createSectionTitle(),
+      this.createSectionExit(),
+    );
+    return this.sectionHeaderEl;
   }
 
-  createView() {
-    return this.svg.createView();
+  createSectionTitle() {
+    this.sectionTitleEl = document.createElement('div');
+    this.sectionTitleEl.className = 'section__title';
+    this.sectionTitleEl.textContent = 'Shared media';
+    return this.sectionTitleEl;
   }
 
-  createSettings() {
-    return this.svg.createSettings();
+  createSectionExit() {
+    this.sectionExitEl = document.createElement('div');
+    this.sectionExitEl.className = 'section__exit';
+    this.sectionExitEl.textContent = '🞨';
+    return this.sectionExitEl;
   }
 
-  createCheck() {
-    return this.svg.createCheck();
+  createSectionFiles() {
+    this.sectionFilesEl = document.createElement('div');
+    this.sectionFilesEl.className = 'section__files';
+    this.sectionFilesEl.append(
+      this.createFile(322, 'videos'),
+      this.createFile(228, 'files'),
+      this.createFile(322, 'audio-files'),
+      this.createFile(228, 'shared-links'),
+      this.createFile(555, 'voice-messages'),
+    );
+    return this.sectionFilesEl;
   }
 
-  createPaperclip() {
-    return this.svg.createPaperclip();
+  createFile(number, type) {
+    switch (type) {
+      case 'videos':
+        this.icon = this.svg.createVideos();
+        break;
+      case 'files':
+        this.icon = this.svg.createDocs();
+        break;
+      case 'audio-files':
+        this.icon = this.svg.createAudios();
+        break;
+      case 'shared-links':
+        this.icon = this.svg.createLinks();
+        break;
+      case 'voice-messages':
+        this.icon = this.svg.createVoice();
+        break;
+      default:
+        throw new Error('Неверный тип данных');
+    }
+    this.fileEl = document.createElement('div');
+    this.fileEl.className = 'file';
+    this.fileEl.append(
+      this.icon,
+      this.createQuantity(number, type),
+    );
+    return this.fileEl;
   }
 
-  createSmile() {
-    return this.svg.createSmile();
+  createQuantity(number, type) {
+    if (!Number.isInteger(number)) throw new Error('Количество файлов должно быть числом');
+    switch (type) {
+      case 'videos':
+      case 'files':
+      case 'audio-files':
+      case 'shared-links':
+      case 'voice-messages':
+        this.type = type.replace(/-/g, ' ');
+        break;
+      default:
+        throw new Error('Неверный тип данных');
+    }
+    this.quantityEl = document.createElement('div');
+    this.quantityEl.className = 'file__quantity';
+    this.quantityEl.textContent = `${number} ${this.type}`;
+    return this.quantityEl;
   }
 
-  createMicrophone() {
-    return this.svg.createMicrophone();
+  createLicenses() {
+    return `<div class="licenses">
+    <div>Photo by <a href="https://unsplash.com/@xcrap?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">César Couto</a> on <a href="https://unsplash.com/s/photos/background?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></div>
+    <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>`;
   }
 }
