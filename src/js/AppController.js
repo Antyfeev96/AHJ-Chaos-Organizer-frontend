@@ -30,6 +30,7 @@ export default class AppController {
       this.exitButton.closest('.section').style.display = 'none';
       this.main.style.width = `${100}%`;
       this.viewIcon.classList.toggle('focus');
+      this.getCoords();
     });
   }
 
@@ -40,11 +41,13 @@ export default class AppController {
           this.exitButton.closest('.section').style.display = 'none';
           this.viewIcon.classList.remove('focus');
           this.main.style.width = `${100}%`;
+          this.getCoords();
           break;
         case false:
           this.exitButton.closest('.section').style.display = 'block';
           this.viewIcon.classList.add('focus');
           this.main.style.width = `${70}%`;
+          this.getCoords();
           break;
         default:
           break;
@@ -63,7 +66,22 @@ export default class AppController {
 
   addSettingsListener() {
     this.settingsIcon.addEventListener('click', () => {
-      this.gui.openSettings();
+      switch (this.body.querySelector('.settings')) {
+        case null:
+          this.gui.createSettings();
+          this.settings = this.body.querySelector('.settings');
+          this.getCoords();
+          break;
+        default:
+          this.body.querySelector('.settings').remove();
+          break;
+      }
     });
+  }
+
+  getCoords() {
+    this.coords = this.body.querySelector('#settings').getBoundingClientRect();
+    this.settings.style.top = `${this.coords.y - 40}px`;
+    this.settings.style.left = `${this.coords.x - 240}px`;
   }
 }

@@ -58,16 +58,16 @@ export default class GUI {
     return this.headerButtonsEl;
   }
 
-  openSettings() {
+  createSettings() {
     this.settingsEl = document.createElement('div');
-    this.settingsEl.className = 'settings';
+    this.settingsEl.className = 'settings hidden';
     this.settingsEl.append(
       this.createSetting(),
       this.createSetting(),
       this.createSetting(),
       this.createSetting(),
     );
-    this.body.append(this.settingsEl);
+    this.containerEl.append(this.settingsEl);
   }
 
   createSetting() {

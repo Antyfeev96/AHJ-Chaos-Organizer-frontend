@@ -10,6 +10,7 @@
 }
 
 .container {
+  position: relative;
   display: flex;
   max-width: 1000px;
   height: 600px;
@@ -212,19 +213,26 @@
   display: flex;
   flex-wrap: wrap;
   align-content: space-between;
-  left: 60%;
-  top: 18%;
   z-index: 99;
   width: 175px;
   height: 150px;
   padding: 20px;
+  margin: 0 auto;
   box-shadow: 1px 1px 2px 0px grey;
   border: 1px solid grey;
   border-radius: 10px;
   background-color: #fff;
 
+  &.hidden {
+    // display: none;
+  }
+
   .setting {
     font-size: 14px;
+
+    &:hover {
+      cursor: pointer;
+    }
 
     &:nth-of-type(n + 2) {
       margin-top: 10px;
