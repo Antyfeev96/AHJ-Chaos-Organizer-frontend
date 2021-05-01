@@ -58,6 +58,25 @@ export default class GUI {
     return this.headerButtonsEl;
   }
 
+  openSettings() {
+    this.settingsEl = document.createElement('div');
+    this.settingsEl.className = 'settings';
+    this.settingsEl.append(
+      this.createSetting(),
+      this.createSetting(),
+      this.createSetting(),
+      this.createSetting(),
+    );
+    this.body.append(this.settingsEl);
+  }
+
+  createSetting() {
+    this.settingEl = document.createElement('div');
+    this.settingEl.className = 'setting';
+    this.settingEl.textContent = 'Настройка';
+    return this.settingEl;
+  }
+
   createChat() {
     this.chatEl = document.createElement('div');
     this.chatEl.className = 'chat';

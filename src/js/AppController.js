@@ -15,12 +15,14 @@ export default class AppController {
     this.main = this.body.querySelector('.main');
     this.viewIcon = this.body.querySelector('#view');
     this.input = this.body.querySelector('input');
+    this.settingsIcon = this.body.querySelector('#settings');
   }
 
   initListeners() {
     this.addExitListener();
     this.addViewListener();
     this.addInputListener();
+    this.addSettingsListener();
   }
 
   addExitListener() {
@@ -56,6 +58,12 @@ export default class AppController {
         this.gui.createMessage(this.input.value);
         this.input.value = '';
       }
+    });
+  }
+
+  addSettingsListener() {
+    this.settingsIcon.addEventListener('click', () => {
+      this.gui.openSettings();
     });
   }
 }
