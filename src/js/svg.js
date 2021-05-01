@@ -25,7 +25,7 @@ export default class SVG {
     this.path1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     this.path2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
-    this.svg.setAttribute('class', 'icon');
+    this.svg.setAttribute('class', 'icon focus');
     this.svg.id = 'view';
     this.svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     this.svg.setAttribute('viewBox', '0 0 511.999 511.999');
