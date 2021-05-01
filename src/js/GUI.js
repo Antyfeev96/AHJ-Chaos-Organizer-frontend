@@ -61,18 +61,17 @@ export default class GUI {
   createChat() {
     this.chatEl = document.createElement('div');
     this.chatEl.className = 'chat';
-    this.chatEl.append(this.createMessage());
     return this.chatEl;
   }
 
-  createMessage() {
+  createMessage(text) {
     this.messageEl = document.createElement('div');
     this.messageEl.className = 'message';
     this.messageEl.append(
-      this.createMessageContent('Hello!'),
+      this.createMessageContent(text),
       this.createMessageStatus(),
     );
-    return this.messageEl;
+    this.chatEl.append(this.messageEl);
   }
 
   createMessageContent(text) {

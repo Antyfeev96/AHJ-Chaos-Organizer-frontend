@@ -14,11 +14,13 @@ export default class AppController {
     this.exitButton = this.body.querySelector('.section__exit');
     this.main = this.body.querySelector('.main');
     this.viewIcon = this.body.querySelector('#view');
+    this.input = this.body.querySelector('input');
   }
 
   initListeners() {
     this.addExitListener();
-    this.addViewIcon();
+    this.addViewListener();
+    this.addInputListener();
   }
 
   addExitListener() {
@@ -29,7 +31,7 @@ export default class AppController {
     });
   }
 
-  addViewIcon() {
+  addViewListener() {
     this.viewIcon.addEventListener('click', () => {
       switch (this.viewIcon.classList.contains('focus')) {
         case true:
@@ -44,6 +46,15 @@ export default class AppController {
           break;
         default:
           break;
+      }
+    });
+  }
+
+  addInputListener() {
+    this.input.addEventListener('keydown', (e) => {
+      if (e.code === 'Enter' && this.input.value !== '') {
+        this.gui.createMessage(this.input.value);
+        this.input.value = '';
       }
     });
   }
