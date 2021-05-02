@@ -67,7 +67,7 @@ export default class GUI {
       this.createSetting(),
       this.createSetting(),
     );
-    this.containerEl.append(this.settingsEl);
+    this.body.append(this.settingsEl);
   }
 
   createSetting() {
