@@ -23,6 +23,7 @@ export default class AppController {
     this.addViewListener();
     this.addInputListener();
     this.addSettingsListener();
+    this.addFilesListener();
   }
 
   addExitListener() {
@@ -74,6 +75,17 @@ export default class AppController {
           this.body.querySelector('.settings').remove();
           break;
       }
+    });
+  }
+
+  addFilesListener() {
+    Array.from(this.body.querySelectorAll('.file')).forEach((file) => {
+      file.addEventListener('click', () => {
+        this.body.append(this.gui.createFilesWindow());
+        document.getElementById('close').addEventListener('click', () => {
+          this.body.querySelector('.files-window').remove();
+        });
+      });
     });
   }
 

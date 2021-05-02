@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable class-methods-use-this */
 export default class GUI {
   constructor(svg) {
@@ -239,5 +240,33 @@ export default class GUI {
     this.quantityEl.className = 'file__quantity';
     this.quantityEl.textContent = `${number} ${this.type}`;
     return this.quantityEl;
+  }
+
+  createFilesWindow() {
+    this.window = document.createElement('div');
+    this.window.className = 'files-window';
+    this.window.append(
+      this.createFilesHeader(),
+      this.createFilesContent(),
+    );
+    return this.window;
+  }
+
+  createFilesHeader() {
+    this.windowHeader = document.createElement('div');
+    this.windowHeader.className = 'files-window__header';
+    this.span1 = document.createElement('span');
+    this.span1.textContent = 'Список файлов';
+    this.span2 = document.createElement('span');
+    this.span2.textContent = '🞨';
+    this.span2.id = 'close';
+    this.windowHeader.append(this.span1, this.span2);
+    return this.windowHeader;
+  }
+
+  createFilesContent() {
+    this.windowContent = document.createElement('div');
+    this.windowContent.className = 'files-window__content';
+    return this.windowContent;
   }
 }

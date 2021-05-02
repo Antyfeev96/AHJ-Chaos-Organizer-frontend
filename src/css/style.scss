@@ -238,3 +238,34 @@
     }
   }
 }
+
+.files-window {
+  position: absolute;
+  top: 15%;
+  left: 30%;
+  width: 500px;
+  height: 500px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 2px solid grey;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 10%;
+    padding: 15px;
+    font-weight: bold;
+    border-bottom: 2px solid grey;
+
+    & span + span:hover {
+      cursor: pointer;
+      transform: scale(1.3);
+    }
+  }
+
+  &__content {
+    padding: 15px;
+    height: 90%;
+  }
+}
