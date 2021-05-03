@@ -1,12 +1,14 @@
 export default class AppController {
-  constructor(gui) {
+  constructor(gui, api) {
     this.gui = gui;
+    this.api = api;
   }
 
   init() {
     this.gui.init();
     this.initConstants();
     this.initListeners();
+    this.api.initWS();
   }
 
   initConstants() {
