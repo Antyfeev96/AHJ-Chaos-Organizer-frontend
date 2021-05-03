@@ -32,10 +32,10 @@ export default class API {
     console.log(this.response);
   }
 
-  sendMessage(message) {
+  sendMessage(text, type) {
     this.request = {
-      type: 'sendMessage',
-      text: message,
+      text,
+      type,
     };
     this.ws.send(JSON.stringify(this.request));
   }

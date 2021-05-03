@@ -95,6 +95,12 @@ export default class GUI {
   }
 
   createMessageContent(text) {
+    if (text.startsWith('http') || text.startsWith('https')) {
+      this.a = document.createElement('a');
+      this.a.href = text;
+      this.a.textContent = text;
+      return this.a;
+    }
     this.messageContentEl = document.createElement('div');
     this.messageContentEl.className = 'message__content';
     this.messageContentEl.textContent = text;

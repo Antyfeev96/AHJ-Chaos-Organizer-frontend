@@ -61,6 +61,7 @@ export default class AppController {
     this.input.addEventListener('keydown', (e) => {
       if (e.code === 'Enter' && this.input.value !== '') {
         this.gui.createMessage(this.input.value);
+        this.api.sendMessage(this.input.value, 'text');
         this.input.value = '';
       }
     });
