@@ -159,7 +159,7 @@ export default class SVG {
     this.path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
     this.svg.setAttribute('class', 'icon');
-    this.svg.id = 'docs';
+    this.svg.id = 'messages';
     this.svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     this.svg.setAttribute('viewBox', '0 0 470.586 470.586');
 
@@ -219,7 +219,7 @@ export default class SVG {
     this.path2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
     this.svg.setAttribute('class', 'icon');
-    this.svg.id = 'voice-messages';
+    this.svg.id = 'voices';
     this.svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     this.svg.setAttribute('viewBox', '-90 1 511 511.99899');
 

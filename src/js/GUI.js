@@ -194,10 +194,10 @@ export default class GUI {
     this.sectionFilesEl.className = 'section__files';
     this.sectionFilesEl.append(
       this.createFile(322, 'videos'),
-      this.createFile(228, 'files'),
-      this.createFile(322, 'audio-files'),
-      this.createFile(228, 'shared-links'),
-      this.createFile(555, 'voice-messages'),
+      this.createFile(228, 'messages'),
+      this.createFile(322, 'audios'),
+      this.createFile(228, 'links'),
+      this.createFile(555, 'voices'),
     );
     return this.sectionFilesEl;
   }
@@ -207,16 +207,16 @@ export default class GUI {
       case 'videos':
         this.icon = this.svg.createVideos();
         break;
-      case 'files':
+      case 'messages':
         this.icon = this.svg.createDocs();
         break;
-      case 'audio-files':
+      case 'audios':
         this.icon = this.svg.createAudios();
         break;
-      case 'shared-links':
+      case 'links':
         this.icon = this.svg.createLinks();
         break;
-      case 'voice-messages':
+      case 'voices':
         this.icon = this.svg.createVoice();
         break;
       default:
@@ -235,10 +235,10 @@ export default class GUI {
     if (!Number.isInteger(number)) throw new Error('Количество файлов должно быть числом');
     switch (type) {
       case 'videos':
-      case 'files':
-      case 'audio-files':
-      case 'shared-links':
-      case 'voice-messages':
+      case 'messages':
+      case 'audios':
+      case 'links':
+      case 'voices':
         this.type = type.replace(/-/g, ' ');
         break;
       default:
@@ -250,12 +250,12 @@ export default class GUI {
     return this.quantityEl;
   }
 
-  createFilesWindow() {
+  createFilesWindow(array) {
     this.window = document.createElement('div');
     this.window.className = 'files-window';
     this.window.append(
       this.createFilesHeader(),
-      this.createFilesContent(),
+      this.createFilesContent(array),
     );
     return this.window;
   }
@@ -272,9 +272,23 @@ export default class GUI {
     return this.windowHeader;
   }
 
-  createFilesContent() {
+  createFilesContent(array) {
     this.windowContent = document.createElement('div');
     this.windowContent.className = 'files-window__content';
+    for (const message of array) {
+      this.windowContent.append(this.createFilesItem(message.message, message.timestamp));
+    }
     return this.windowContent;
+  }
+
+  createFilesItem(text, timestamp) {
+    this.item = document.createElement('div');
+    this.item.className = 'files-window__item';
+    this.itemText = document.createElement('span');
+    this.itemText.textContent = text;
+    this.itemTime = document.createElement('span');
+    this.itemTime.textContent = timestamp;
+    this.item.append(this.itemText, this.itemTime);
+    return this.item;
   }
 }

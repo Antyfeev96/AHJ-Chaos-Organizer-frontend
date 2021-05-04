@@ -82,8 +82,12 @@ export default class AppController {
 
   addFilesListener() {
     Array.from(this.body.querySelectorAll('.file')).forEach((file) => {
-      file.addEventListener('click', () => {
-        this.body.append(this.gui.createFilesWindow());
+      file.addEventListener('click', async () => {
+        const type = file.querySelector('svg').id;
+        console.log(type);
+        this.array = await this.api.request('GET', `give-${type}`);
+        console.log(this.array);
+        this.body.append(this.gui.createFilesWindow(this.array));
         document.getElementById('close').addEventListener('click', () => {
           this.body.querySelector('.files-window').remove();
         });

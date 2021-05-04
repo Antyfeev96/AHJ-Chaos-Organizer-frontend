@@ -61,6 +61,7 @@
       height: 83%;
       background: url('../images/background.jpg') no-repeat;
       background-size: cover;
+      overflow-y: auto;
 
       .message {
         padding: 15px;
@@ -222,10 +223,6 @@
   border-radius: 10px;
   background-color: #fff;
 
-  &.hidden {
-    // display: none;
-  }
-
   .setting {
     font-size: 14px;
 
@@ -267,5 +264,22 @@
   &__content {
     padding: 15px;
     height: 90%;
+    overflow-y: auto;
+  }
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    padding: 5px;
+    border: 2px solid grey;
+    border-radius: 10px;
+    font-size: 16px;
+
+    &:nth-of-type(n + 2) {
+      margin-top: 15px;
+    }
   }
 }
