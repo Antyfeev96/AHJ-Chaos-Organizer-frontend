@@ -8,7 +8,6 @@ export default class AppController {
     this.gui.init();
     this.initConstants();
     this.initListeners();
-    this.api.initWS();
   }
 
   initConstants() {
@@ -58,10 +57,10 @@ export default class AppController {
   }
 
   addInputListener() {
-    this.input.addEventListener('keydown', (e) => {
+    this.input.addEventListener('keydown', async (e) => {
       if (e.code === 'Enter' && this.input.value !== '') {
-        this.gui.createMessage(this.input.value);
-        this.api.sendMessage(this.input.value, 'text');
+        const { message, type, timestamp } = await this.api.request('POST', this.input.value);
+        this.gui.createMessage(message, type, timestamp);
         this.input.value = '';
       }
     });

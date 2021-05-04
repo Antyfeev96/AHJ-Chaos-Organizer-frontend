@@ -84,43 +84,45 @@ export default class GUI {
     return this.chatEl;
   }
 
-  createMessage(text) {
+  createMessage(text, type, timestamp) {
     this.messageEl = document.createElement('div');
     this.messageEl.className = 'message';
     this.messageEl.append(
-      this.createMessageContent(text),
-      this.createMessageStatus(),
+      this.createMessageContent(text, type),
+      this.createMessageStatus(timestamp),
     );
     this.chatEl.append(this.messageEl);
   }
 
-  createMessageContent(text) {
-    if (text.startsWith('http') || text.startsWith('https')) {
-      this.a = document.createElement('a');
-      this.a.href = text;
-      this.a.textContent = text;
-      return this.a;
+  createMessageContent(text, type) {
+    console.log(type);
+    switch (type) {
+      default:
+        this.messageContentEl = document.createElement('div');
+        break;
+      case 'link':
+        this.messageContentEl = document.createElement('a');
+        this.messageContentEl.href = text;
     }
-    this.messageContentEl = document.createElement('div');
     this.messageContentEl.className = 'message__content';
     this.messageContentEl.textContent = text;
     return this.messageContentEl;
   }
 
-  createMessageStatus() {
+  createMessageStatus(timestamp) {
     this.messageStatusEl = document.createElement('div');
     this.messageStatusEl.className = 'message__status';
     this.messageStatusEl.append(
-      this.createMessageTimestamp('23:17'),
+      this.createMessageTimestamp(timestamp),
       this.svg.createCheck(),
     );
     return this.messageStatusEl;
   }
 
-  createMessageTimestamp(time) {
+  createMessageTimestamp(timestamp) {
     this.messageTimestampEl = document.createElement('div');
     this.messageTimestampEl.className = 'message__timestamp';
-    this.messageTimestampEl.textContent = time;
+    this.messageTimestampEl.textContent = timestamp;
     return this.messageTimestampEl;
   }
 

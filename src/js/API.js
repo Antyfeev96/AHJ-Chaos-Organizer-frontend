@@ -1,42 +1,64 @@
-/* eslint-disable class-methods-use-this */
+/* eslint-disable consistent-return */
 export default class API {
-  constructor() {
-    this.ws = new WebSocket('ws://localhost:7070/ws');
-  }
+  async request(method, message) {
+    switch (method) {
+      case 'GET':
+        this.response = await fetch('http://localhost:7070/')
+          .then(async (value) => {
+            this.data = await value.json();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        break;
+      case 'POST':
+        try {
+          this.formData = new FormData();
+          this.formData.set('message', message);
 
-  initWS() {
-    this.ws.addEventListener('open', () => this.openListener());
-    this.ws.addEventListener('message', (e) => this.messageListener(e));
-    this.ws.addEventListener('close', (e) => this.closeListener(e));
-    this.ws.addEventListener('error', () => this.errorListener());
-  }
-
-  openListener() {
-    console.log('Server is open');
-  }
-
-  errorListener() {
-    console.log('error');
-  }
-
-  closeListener(e) {
-    if (e.wasClean) {
-      console.log(`Соединение закрыто, код ${e.code}, причина ${e.reason}`);
+          this.response = await fetch(
+            `http://localhost:7070/?message=${this.formData.get('message')}`,
+            {
+              method,
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+            },
+          );
+          this.result = await this.response.json();
+          return this.result;
+        } catch (error) {
+          console.log(error);
+        }
+        break;
+      default:
+        break;
     }
-    this.ws = new WebSocket('ws://localhost:7070/ws');
-    this.initWS();
+    return this.data;
   }
 
-  messageListener(e) {
-    this.response = JSON.parse(e.data);
-    console.log(this.response);
-  }
+  async postRequest(method, message) {
+    if (method !== 'POST') return;
 
-  sendMessage(text, type) {
-    this.request = {
-      text,
-      type,
-    };
-    this.ws.send(JSON.stringify(this.request));
+    try {
+      this.formData = new FormData();
+      this.formData.set('type', 'check');
+
+      this.response = await fetch(
+        `http://localhost:7070/?type=${this.formData.get('type')}&message=${message}`,
+        {
+          method,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: message,
+        },
+      );
+
+      this.result = await this.response.json();
+      return this.result;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
