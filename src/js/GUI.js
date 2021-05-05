@@ -95,7 +95,6 @@ export default class GUI {
   }
 
   createMessageContent(text, type) {
-    console.log(type);
     switch (type) {
       default:
         this.messageContentEl = document.createElement('div');
@@ -149,6 +148,7 @@ export default class GUI {
   createInputEl() {
     this.inputEl = document.createElement('input');
     this.inputEl.className = 'input-box__input';
+    this.inputEl.id = 'input';
     this.inputEl.placeholder = 'Write a message...';
     this.inputEl.type = 'text';
     return this.inputEl;
@@ -206,7 +206,6 @@ export default class GUI {
       this.createFile(228, 'messages'),
       this.createFile(322, 'audios'),
       this.createFile(228, 'links'),
-      this.createFile(555, 'voices'),
     );
     return this.sectionFilesEl;
   }
@@ -224,9 +223,6 @@ export default class GUI {
         break;
       case 'links':
         this.icon = this.svg.createLinks();
-        break;
-      case 'voices':
-        this.icon = this.svg.createVoice();
         break;
       default:
         throw new Error('Неверный тип данных');
@@ -247,7 +243,6 @@ export default class GUI {
       case 'messages':
       case 'audios':
       case 'links':
-      case 'voices':
         this.type = type.replace(/-/g, ' ');
         break;
       default:
@@ -285,9 +280,21 @@ export default class GUI {
     this.windowContent = document.createElement('div');
     this.windowContent.className = 'files-window__content';
     for (const message of array) {
-      this.windowContent.append(
-        this.createFilesItem(message.message, message.timestamp, message.type),
-      );
+      switch (message.type) {
+        case 'link':
+        case 'text':
+          this.windowContent.append(
+            this.createFilesItem(message.message, message.timestamp, message.type),
+          );
+          break;
+        case 'videos':
+          this.windowContent.append(
+            this.createVideoItem(message.message, message.timestamp),
+          );
+          break;
+        default:
+          break;
+      }
     }
     return this.windowContent;
   }
@@ -308,4 +315,21 @@ export default class GUI {
     this.item.append(this.itemText, this.itemTime);
     return this.item;
   }
+
+  createVideoItem(text, timestamp) {
+    this.item = document.createElement('div');
+    this.item.className = 'files-window__item';
+    this.itemContent = document.createElement('img');
+    this.itemContent.src = text;
+    this.itemTime = document.createElement('span');
+    this.itemTime.textContent = timestamp;
+    this.item.append(this.itemContent, this.itemTime);
+    return this.item;
+  }
+
+  // createPreview() {
+  //   this.preview = document.createElement('img');
+  //   this.preview.id = 'preview';
+  //   return this.preview;
+  // }
 }

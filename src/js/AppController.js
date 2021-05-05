@@ -15,20 +15,14 @@ export default class AppController {
     this.exitButton = this.body.querySelector('.section__exit');
     this.main = this.body.querySelector('.main');
     this.viewIcon = this.body.querySelector('#view');
-    this.input = this.body.querySelector('input');
+    this.input = this.body.querySelector('#input');
     this.settingsIcon = this.body.querySelector('#settings');
     this.paperclip = this.body.querySelector('#paperclip');
     this.fileControl = this.body.querySelector('.input-file');
-    this.reader = new FileReader();
-
-    this.reader.onload = () => {
-      this.result = JSON.stringify(this.reader.result);
-      this.api.sendImage(this.result);
-    };
-
-    this.reader.onerror = () => {
-      console.log(this.reader.error);
-    };
+    this.preview = this.body.querySelector('#preview');
+    this.imgArray = [];
+    this.videoArray = [];
+    this.audioArray = [];
   }
 
   initListeners() {
@@ -39,6 +33,7 @@ export default class AppController {
     this.addChangeListener();
     this.addSettingsListener();
     this.addFilesListener();
+    this.addVideosListener();
   }
 
   addExitListener() {
@@ -72,8 +67,13 @@ export default class AppController {
 
   addChangeListener() {
     this.fileControl.addEventListener('change', () => {
-      [this.file] = this.fileControl.files;
-      this.reader.readAsText(this.file);
+      const file = this.fileControl.files[0];
+      const url = URL.createObjectURL(file);
+      this.videoArray.push({
+        message: url,
+        timestamp: '15:15',
+        type: 'videos',
+      });
     });
   }
 
@@ -114,11 +114,28 @@ export default class AppController {
       file.addEventListener('click', async () => {
         if (document.querySelector('.files-window') !== null) return;
         const type = file.querySelector('svg').id;
-        this.array = await this.api.request('GET', `give-${type}`);
-        this.body.append(this.gui.createFilesWindow(this.array));
-        document.getElementById('close').addEventListener('click', () => {
-          this.body.querySelector('.files-window').remove();
-        });
+        if (type === 'messages' || type === 'links') {
+          this.array = await this.api.request('GET', `give-${type}`);
+          this.body.append(this.gui.createFilesWindow(this.array));
+          document.getElementById('close').addEventListener('click', () => {
+            this.body.querySelector('.files-window').remove();
+          });
+        }
+      });
+    });
+  }
+
+  addVideosListener() {
+    Array.from(this.body.querySelectorAll('.file')).forEach((file) => {
+      file.addEventListener('click', async () => {
+        if (document.querySelector('.files-window') !== null) return;
+        const type = file.querySelector('svg').id;
+        if (type === 'videos') {
+          this.body.append(this.gui.createFilesWindow(this.videoArray));
+          document.getElementById('close').addEventListener('click', () => {
+            this.body.querySelector('.files-window').remove();
+          });
+        }
       });
     });
   }
