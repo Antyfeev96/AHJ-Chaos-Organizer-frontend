@@ -8,7 +8,7 @@ export default class API {
           this.formData.set('message', message);
 
           this.response = await fetch(
-            `http://localhost:7070/?message=${this.formData.get('message')}`,
+            `https://ahj-chaos-organizer-backend.herokuapp.com/?message=${this.formData.get('message')}`,
             {
               method,
               headers: {
@@ -28,7 +28,7 @@ export default class API {
           this.formData.set('message', message);
 
           this.response = await fetch(
-            `http://localhost:7070/?message=${this.formData.get('message')}`,
+            `https://ahj-chaos-organizer-backend.herokuapp.com/?message=${this.formData.get('message')}`,
             {
               method,
               headers: {
