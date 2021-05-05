@@ -46,4 +46,22 @@ export default class API {
         break;
     }
   }
+
+  async sendImage(value) {
+    try {
+      this.response = await fetch(
+        `http://localhost:7070/?message=image&value=${value}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+      this.result = await this.response.json();
+      return this.result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }

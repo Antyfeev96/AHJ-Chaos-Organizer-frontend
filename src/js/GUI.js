@@ -130,11 +130,20 @@ export default class GUI {
     this.inputBoxEl = document.createElement('div');
     this.inputBoxEl.className = 'input-box';
     this.inputBoxEl.append(
+      this.createInputFile(),
       this.svg.createPaperclip(),
       this.createInputEl(),
       this.createInputButtons(),
     );
     return this.inputBoxEl;
+  }
+
+  createInputFile() {
+    this.inputFile = document.createElement('input');
+    this.inputFile.type = 'file';
+    this.inputFile.name = 'file';
+    this.inputFile.className = 'input-file';
+    return this.inputFile;
   }
 
   createInputEl() {
@@ -276,16 +285,24 @@ export default class GUI {
     this.windowContent = document.createElement('div');
     this.windowContent.className = 'files-window__content';
     for (const message of array) {
-      this.windowContent.append(this.createFilesItem(message.message, message.timestamp));
+      this.windowContent.append(
+        this.createFilesItem(message.message, message.timestamp, message.type),
+      );
     }
     return this.windowContent;
   }
 
-  createFilesItem(text, timestamp) {
+  createFilesItem(text, timestamp, type) {
     this.item = document.createElement('div');
     this.item.className = 'files-window__item';
-    this.itemText = document.createElement('span');
-    this.itemText.textContent = text;
+    if (type === 'link') {
+      this.itemText = document.createElement('a');
+      this.itemText.href = text;
+      this.itemText.textContent = text;
+    } else {
+      this.itemText = document.createElement('span');
+      this.itemText.textContent = text;
+    }
     this.itemTime = document.createElement('span');
     this.itemTime.textContent = timestamp;
     this.item.append(this.itemText, this.itemTime);

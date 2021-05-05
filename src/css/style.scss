@@ -107,12 +107,17 @@
       height: 7%;
       padding: 10px;
 
+      .input-file {
+        position: absolute;
+        top: -1000px;
+      }
+
       &__paperclip {
         width: 16px;
         height: 16px;
       }
 
-      input {
+      &__input {
         margin-left: 15px;
         width: 90%;
         outline: none;

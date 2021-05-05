@@ -17,12 +17,26 @@ export default class AppController {
     this.viewIcon = this.body.querySelector('#view');
     this.input = this.body.querySelector('input');
     this.settingsIcon = this.body.querySelector('#settings');
+    this.paperclip = this.body.querySelector('#paperclip');
+    this.fileControl = this.body.querySelector('.input-file');
+    this.reader = new FileReader();
+
+    this.reader.onload = () => {
+      this.result = JSON.stringify(this.reader.result);
+      this.api.sendImage(this.result);
+    };
+
+    this.reader.onerror = () => {
+      console.log(this.reader.error);
+    };
   }
 
   initListeners() {
     this.addExitListener();
     this.addViewListener();
+    this.addPaperclipListener();
     this.addInputListener();
+    this.addChangeListener();
     this.addSettingsListener();
     this.addFilesListener();
   }
@@ -56,6 +70,21 @@ export default class AppController {
     });
   }
 
+  addChangeListener() {
+    this.fileControl.addEventListener('change', () => {
+      [this.file] = this.fileControl.files;
+      this.reader.readAsText(this.file);
+    });
+  }
+
+  addPaperclipListener() {
+    this.paperclip.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.fileControl.dispatchEvent(new MouseEvent('click'));
+    });
+  }
+
   addInputListener() {
     this.input.addEventListener('keydown', async (e) => {
       if (e.code === 'Enter' && this.input.value !== '') {
@@ -83,10 +112,9 @@ export default class AppController {
   addFilesListener() {
     Array.from(this.body.querySelectorAll('.file')).forEach((file) => {
       file.addEventListener('click', async () => {
+        if (document.querySelector('.files-window') !== null) return;
         const type = file.querySelector('svg').id;
-        console.log(type);
         this.array = await this.api.request('GET', `give-${type}`);
-        console.log(this.array);
         this.body.append(this.gui.createFilesWindow(this.array));
         document.getElementById('close').addEventListener('click', () => {
           this.body.querySelector('.files-window').remove();
