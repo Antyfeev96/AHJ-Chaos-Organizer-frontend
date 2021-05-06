@@ -290,16 +290,20 @@ export default class GUI {
         case 'link':
         case 'text':
           this.windowContent.append(
-            this.createFilesItem(message.text, message.timestamp, message.type),
+            this.createTextItem(message.text, message.timestamp, message.type),
           );
           break;
         case 'video':
-        case 'image':
-        case 'audio':
-          // const text = message.text.slice(5);
           this.windowContent.append(
             this.createVideoItem(message.text, message.timestamp),
           );
+          break;
+        case 'image':
+          this.windowContent.append(
+            this.createImageItem(message.text, message.timestamp),
+          );
+          break;
+        case 'audio':
           break;
         default:
           break;
@@ -308,7 +312,7 @@ export default class GUI {
     return this.windowContent;
   }
 
-  createFilesItem(text, timestamp, type) {
+  createTextItem(text, timestamp, type) {
     this.item = document.createElement('div');
     this.item.className = 'files-window__item';
     if (type === 'link') {
@@ -325,7 +329,7 @@ export default class GUI {
     return this.item;
   }
 
-  createVideoItem(text, timestamp) {
+  createImageItem(text, timestamp) {
     this.item = document.createElement('div');
     this.item.className = 'files-window__item';
     this.itemContent = document.createElement('img');
@@ -333,6 +337,20 @@ export default class GUI {
     this.itemTime = document.createElement('span');
     this.itemTime.textContent = timestamp;
     this.item.append(this.itemContent, this.itemTime);
+    return this.item;
+  }
+
+  createVideoItem(text, timestamp) {
+    this.item = document.createElement('div');
+    this.item.className = 'files-window__item';
+    this.video = document.createElement('video');
+    this.video.controls = 'controls';
+    this.videoContent = document.createElement('source');
+    this.videoContent.src = text;
+    this.video.append(this.videoContent);
+    this.itemTime = document.createElement('span');
+    this.itemTime.textContent = timestamp;
+    this.item.append(this.video, this.itemTime);
     return this.item;
   }
 
