@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 /* eslint-disable consistent-return */
 /* eslint-disable class-methods-use-this */
 export default class GUI {
@@ -289,12 +290,15 @@ export default class GUI {
         case 'link':
         case 'text':
           this.windowContent.append(
-            this.createFilesItem(message.message, message.timestamp, message.type),
+            this.createFilesItem(message.text, message.timestamp, message.type),
           );
           break;
-        case 'videos':
+        case 'video':
+        case 'image':
+        case 'audio':
+          // const text = message.text.slice(5);
           this.windowContent.append(
-            this.createVideoItem(message.message, message.timestamp),
+            this.createVideoItem(message.text, message.timestamp),
           );
           break;
         default:

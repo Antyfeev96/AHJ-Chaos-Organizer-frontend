@@ -30,7 +30,7 @@ export default class AppController {
     this.addChangeListener();
     this.addSettingsListener();
     this.addFilesListener();
-    this.addVideosListener();
+    this.addMediaListener();
   }
 
   addExitListener() {
@@ -67,13 +67,10 @@ export default class AppController {
       const file = this.fileControl.files[0];
       this.name = file.name;
       if (file.type.startsWith('image')) {
-        console.log(file.type);
         this.type = 'image';
       } else if (file.type.startsWith('video')) {
-        console.log(file.type);
         this.type = 'video';
       } else if (file.type.startsWith('audio')) {
-        console.log(file.type);
         this.type = 'audio';
       }
       const blob = URL.createObjectURL(file);
@@ -83,8 +80,8 @@ export default class AppController {
         text: this.text,
         type: this.type,
       };
-      const { type, text } = await this.api.sendMedia(obj);
-      console.log(type, text);
+      await this.api.sendMedia(obj);
+      // URL.revokeObjectURL(blob);
     });
   }
 
@@ -129,8 +126,11 @@ export default class AppController {
       file.addEventListener('click', async () => {
         if (document.querySelector('.files-window') !== null) return;
         const type = file.querySelector('svg').id;
-        if (type === 'messages' || type === 'links') {
-          this.array = await this.api.request('GET', type);
+        if (type === 'message' || type === 'link') {
+          this.array = await this.api.request('GET', {
+            text: `give-${type}`,
+            type,
+          });
           this.body.append(this.gui.createFilesWindow(this.array));
           document.getElementById('close').addEventListener('click', () => {
             this.body.querySelector('.files-window').remove();
@@ -140,13 +140,17 @@ export default class AppController {
     });
   }
 
-  addVideosListener() {
+  addMediaListener() {
     Array.from(this.body.querySelectorAll('.file')).forEach((file) => {
       file.addEventListener('click', async () => {
         if (document.querySelector('.files-window') !== null) return;
         const type = file.querySelector('svg').id;
-        if (type === 'videos') {
-          this.body.append(this.gui.createFilesWindow(this.videoArray));
+        if (type === 'video' || type === 'image' || type === 'audio') {
+          this.array = await this.api.request('GET', {
+            text: `give-${type}`,
+            type,
+          });
+          this.body.append(this.gui.createFilesWindow(this.array));
           document.getElementById('close').addEventListener('click', () => {
             this.body.querySelector('.files-window').remove();
           });
