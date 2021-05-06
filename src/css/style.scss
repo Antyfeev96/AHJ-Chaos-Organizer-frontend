@@ -283,14 +283,18 @@
     border-radius: 10px;
     font-size: 16px;
 
+    img {
+      width: 100px;
+      height: 100px;
+    }
+
     video {
       width: 200px;
       height: 200px;
     }
 
-    img {
-      width: 100px;
-      height: 100px;
+    audio {
+      outline: none;
     }
 
     &:nth-of-type(n + 2) {

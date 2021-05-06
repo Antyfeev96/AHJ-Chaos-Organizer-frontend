@@ -304,6 +304,9 @@ export default class GUI {
           );
           break;
         case 'audio':
+          this.windowContent.append(
+            this.createAudioItem(message.text, message.timestamp),
+          );
           break;
         default:
           break;
@@ -351,6 +354,20 @@ export default class GUI {
     this.itemTime = document.createElement('span');
     this.itemTime.textContent = timestamp;
     this.item.append(this.video, this.itemTime);
+    return this.item;
+  }
+
+  createAudioItem(text, timestamp) {
+    this.item = document.createElement('div');
+    this.item.className = 'files-window__item';
+    this.audio = document.createElement('audio');
+    this.audio.controls = 'controls';
+    this.audioContent = document.createElement('source');
+    this.audioContent.src = text;
+    this.audio.append(this.audioContent);
+    this.itemTime = document.createElement('span');
+    this.itemTime.textContent = timestamp;
+    this.item.append(this.audio, this.itemTime);
     return this.item;
   }
 
