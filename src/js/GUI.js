@@ -202,27 +202,31 @@ export default class GUI {
     this.sectionFilesEl = document.createElement('div');
     this.sectionFilesEl.className = 'section__files';
     this.sectionFilesEl.append(
-      this.createFile(322, 'videos'),
       this.createFile(228, 'messages'),
-      this.createFile(322, 'audios'),
       this.createFile(228, 'links'),
+      this.createFile(555, 'image'),
+      this.createFile(322, 'video'),
+      this.createFile(322, 'audio'),
     );
     return this.sectionFilesEl;
   }
 
   createFile(number, type) {
     switch (type) {
-      case 'videos':
-        this.icon = this.svg.createVideos();
-        break;
       case 'messages':
         this.icon = this.svg.createDocs();
         break;
-      case 'audios':
-        this.icon = this.svg.createAudios();
-        break;
       case 'links':
         this.icon = this.svg.createLinks();
+        break;
+      case 'video':
+        this.icon = this.svg.createVideos();
+        break;
+      case 'image':
+        this.icon = this.svg.createImages();
+        break;
+      case 'audio':
+        this.icon = this.svg.createAudios();
         break;
       default:
         throw new Error('Неверный тип данных');
@@ -239,10 +243,11 @@ export default class GUI {
   createQuantity(number, type) {
     if (!Number.isInteger(number)) throw new Error('Количество файлов должно быть числом');
     switch (type) {
-      case 'videos':
+      case 'video':
       case 'messages':
-      case 'audios':
+      case 'audio':
       case 'links':
+      case 'image':
         this.type = type.replace(/-/g, ' ');
         break;
       default:

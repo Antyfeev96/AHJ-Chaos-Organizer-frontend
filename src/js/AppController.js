@@ -20,9 +20,6 @@ export default class AppController {
     this.paperclip = this.body.querySelector('#paperclip');
     this.fileControl = this.body.querySelector('.input-file');
     this.preview = this.body.querySelector('#preview');
-    this.imgArray = [];
-    this.videoArray = [];
-    this.audioArray = [];
   }
 
   initListeners() {
@@ -66,14 +63,28 @@ export default class AppController {
   }
 
   addChangeListener() {
-    this.fileControl.addEventListener('change', () => {
+    this.fileControl.addEventListener('change', async () => {
       const file = this.fileControl.files[0];
-      const url = URL.createObjectURL(file);
-      this.videoArray.push({
-        message: url,
-        timestamp: '15:15',
-        type: 'videos',
-      });
+      this.name = file.name;
+      if (file.type.startsWith('image')) {
+        console.log(file.type);
+        this.type = 'image';
+      } else if (file.type.startsWith('video')) {
+        console.log(file.type);
+        this.type = 'video';
+      } else if (file.type.startsWith('audio')) {
+        console.log(file.type);
+        this.type = 'audio';
+      }
+      const blob = URL.createObjectURL(file);
+      this.text = await new Response(blob).text();
+      const obj = {
+        name: this.name,
+        text: this.text,
+        type: this.type,
+      };
+      const { type, text } = await this.api.sendMedia(obj);
+      console.log(type, text);
     });
   }
 
@@ -88,8 +99,12 @@ export default class AppController {
   addInputListener() {
     this.input.addEventListener('keydown', async (e) => {
       if (e.code === 'Enter' && this.input.value !== '') {
-        const { message, type, timestamp } = await this.api.request('POST', this.input.value);
-        this.gui.createMessage(message, type, timestamp);
+        this.type = this.input.value.startsWith('http') || this.input.value.startsWith('https') ? 'link' : 'text';
+        const { text, type, timestamp } = await this.api.request('POST', {
+          type: this.type,
+          text: this.input.value,
+        });
+        this.gui.createMessage(text, type, timestamp);
         this.input.value = '';
       }
     });
@@ -115,7 +130,7 @@ export default class AppController {
         if (document.querySelector('.files-window') !== null) return;
         const type = file.querySelector('svg').id;
         if (type === 'messages' || type === 'links') {
-          this.array = await this.api.request('GET', `give-${type}`);
+          this.array = await this.api.request('GET', type);
           this.body.append(this.gui.createFilesWindow(this.array));
           document.getElementById('close').addEventListener('click', () => {
             this.body.querySelector('.files-window').remove();
@@ -149,3 +164,7 @@ export default class AppController {
     this.settings.style.left = `${this.coords.left - 150}px`;
   }
 }
+
+// Отображение аудио/видео/картинок в чате
+// Смайлики
+// Скачивание при отправке

@@ -145,12 +145,47 @@ export default class SVG {
     this.path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
     this.svg.setAttribute('class', 'icon');
-    this.svg.id = 'videos';
+    this.svg.id = 'video';
     this.svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     this.svg.setAttribute('viewBox', '0 -87 472 472');
 
     this.path.setAttribute('d', 'm467.101562 26.527344c-3.039062-1.800782-6.796874-1.871094-9.898437-.179688l-108.296875 59.132813v-35.480469c-.03125-27.601562-22.398438-49.96875-50-50h-248.90625c-27.601562.03125-49.96875 22.398438-50 50v197.421875c.03125 27.601563 22.398438 49.96875 50 50h248.90625c27.601562-.03125 49.96875-22.398437 50-50v-34.835937l108.300781 59.132812c3.097657 1.691406 6.859375 1.625 9.894531-.175781 3.039063-1.804688 4.898438-5.074219 4.898438-8.601563v-227.816406c0-3.53125-1.863281-6.796875-4.898438-8.597656zm-138.203124 220.898437c-.015626 16.5625-13.4375 29.980469-30 30h-248.898438c-16.5625-.019531-29.980469-13.4375-30-30v-197.425781c.019531-16.558594 13.4375-29.980469 30-30h248.90625c16.558594.019531 29.980469 13.441406 30 30zm123.101562-1.335937-103.09375-56.289063v-81.535156l103.09375-56.285156zm0 0');
     this.svg.append(this.path);
+    return this.svg;
+  }
+
+  createImages() {
+    this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    this.path1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    this.path2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+
+    this.svg.setAttribute('class', 'icon');
+    this.svg.id = 'image';
+    this.svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    this.svg.setAttribute('viewBox', '0 0 512 512');
+
+    this.path1.setAttribute('d', 'M446.575,0H65.425C29.349,0,0,29.35,0,65.426v381.149C0,482.65,29.349,512,65.425,512h381.15 C482.651,512,512,482.65,512,446.574V65.426C512,29.35,482.651,0,446.575,0z M481.842,446.575 c0,19.447-15.821,35.267-35.267,35.267H65.425c-19.447,0-35.268-15.821-35.268-35.267v-55.007l99.255-84.451 c3.622-3.082,8.906-3.111,12.562-0.075l62.174,51.628c5.995,4.977,14.795,4.569,20.304-0.946L372.181,209.77 c2.67-2.675,5.783-2.935,7.408-2.852c1.62,0.083,4.695,0.661,7.078,3.596l95.176,117.19V446.575z M481.842,279.865l-71.766-88.366 c-7.117-8.764-17.666-14.122-28.942-14.701c-11.268-0.57-22.317,3.672-30.294,11.662L212.832,326.681l-51.59-42.839 c-14.959-12.422-36.563-12.293-51.373,0.308l-79.712,67.822V65.426c0-19.447,15.821-35.268,35.268-35.268h381.15 c19.447,0,35.267,15.821,35.267,35.268V279.865z');
+    this.path2.setAttribute('d', 'M161.174,62.995c-40.095,0-72.713,32.62-72.713,72.713c0,40.094,32.619,72.713,72.713,72.713s72.713-32.619,72.713-72.713 S201.269,62.995,161.174,62.995z M161.174,178.264c-23.466,0-42.556-19.091-42.556-42.556c0-23.466,19.09-42.556,42.556-42.556 c23.466,0,42.556,19.091,42.556,42.556S184.64,178.264,161.174,178.264z');
+    this.svg.append(this.path1, this.path2);
+    return this.svg;
+  }
+
+  createAudios() {
+    this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    this.path1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    this.path2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    this.path3 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+
+    this.svg.setAttribute('class', 'icon');
+    this.svg.id = 'audio';
+    this.svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    this.svg.setAttribute('viewBox', '0 0 512 512');
+
+    this.path1.setAttribute('d', 'M256,31C115.39,31,0,145.39,0,286v120c0,24.814,20.186,45,45,45h15V301H45c-5.284,0-10.285,1.082-15,2.763V286 C30,161.928,131.928,61,256,61s226,100.928,226,225v17.763c-4.715-1.681-9.716-2.763-15-2.763h-15v150h15 c24.814,0,45-20.186,45-45V286C512,145.39,396.61,31,256,31z');
+    this.path2.setAttribute('d', 'M135,271h-15c-16.569,0-30,13.431-30,30v150c0,16.569,13.431,30,30,30h15c8.284,0,15-6.716,15-15V286 C150,277.716,143.284,271,135,271z');
+    this.path3.setAttribute('d', 'M392,271h-15c-8.284,0-15,6.716-15,15v180c0,8.284,6.716,15,15,15h15c16.569,0,30-13.431,30-30V301 C422,284.431,408.569,271,392,271z');
+
+    this.svg.append(this.path1, this.path2, this.path3);
     return this.svg;
   }
 
@@ -174,25 +209,6 @@ export default class SVG {
     M343.229,318.011c0,5.013-4.066,9.079-9.079,9.079H128.364c-5.012,0-9.079-4.066-9.079-9.079s4.067-9.079,9.079-9.079H334.15
     C339.163,308.932,343.229,312.998,343.229,318.011z`);
     this.svg.append(this.path);
-    return this.svg;
-  }
-
-  createAudios() {
-    this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    this.path1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    this.path2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    this.path3 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-
-    this.svg.setAttribute('class', 'icon');
-    this.svg.id = 'audios';
-    this.svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-    this.svg.setAttribute('viewBox', '0 0 512 512');
-
-    this.path1.setAttribute('d', 'M256,31C115.39,31,0,145.39,0,286v120c0,24.814,20.186,45,45,45h15V301H45c-5.284,0-10.285,1.082-15,2.763V286 C30,161.928,131.928,61,256,61s226,100.928,226,225v17.763c-4.715-1.681-9.716-2.763-15-2.763h-15v150h15 c24.814,0,45-20.186,45-45V286C512,145.39,396.61,31,256,31z');
-    this.path2.setAttribute('d', 'M135,271h-15c-16.569,0-30,13.431-30,30v150c0,16.569,13.431,30,30,30h15c8.284,0,15-6.716,15-15V286 C150,277.716,143.284,271,135,271z');
-    this.path3.setAttribute('d', 'M392,271h-15c-8.284,0-15,6.716-15,15v180c0,8.284,6.716,15,15,15h15c16.569,0,30-13.431,30-30V301 C422,284.431,408.569,271,392,271z');
-
-    this.svg.append(this.path1, this.path2, this.path3);
     return this.svg;
   }
 
