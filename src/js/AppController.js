@@ -11,7 +11,7 @@ export default class AppController {
     this.initListeners();
   }
 
-  initConstants() {
+  async initConstants() {
     this.body = document.body;
     this.container = this.body.querySelector('.container');
     this.exitButton = this.body.querySelector('.section__exit');
@@ -22,6 +22,7 @@ export default class AppController {
     this.paperclip = this.body.querySelector('#paperclip');
     this.fileControl = this.body.querySelector('.input-file');
     this.preview = this.body.querySelector('#preview');
+    await this.changeQuantity();
   }
 
   initListeners() {
@@ -69,6 +70,7 @@ export default class AppController {
     this.fileControl.addEventListener('change', async () => {
       const file = this.fileControl.files[0];
       await this.sendFile(file);
+      await this.changeQuantity();
     });
   }
 
@@ -103,13 +105,20 @@ export default class AppController {
   addInputListener() {
     this.input.addEventListener('keydown', async (e) => {
       if (e.code === 'Enter' && this.input.value !== '') {
-        this.type = this.input.value.startsWith('http') || this.input.value.startsWith('https') ? 'link' : 'text';
-        const { text, type, timestamp } = await this.api.request('POST', {
+        this.type = this.input.value.startsWith('http') || this.input.value.startsWith('https') ? 'link' : 'message';
+        const {
+          text,
+          type,
+          timestamp,
+          length,
+        } = await this.api.request('POST', {
           type: this.type,
           text: this.input.value,
         });
+        console.log(length);
         this.gui.createMessage(text, type, timestamp);
         this.input.value = '';
+        await this.changeQuantity();
       }
     });
   }
@@ -142,6 +151,7 @@ export default class AppController {
           document.getElementById('close').addEventListener('click', () => {
             this.body.querySelector('.files-window').remove();
           });
+          await this.changeQuantity();
         }
       });
     });
@@ -162,6 +172,7 @@ export default class AppController {
             this.body.querySelector('.files-window').remove();
           });
         }
+        await this.changeQuantity();
       });
     });
   }
@@ -190,8 +201,17 @@ export default class AppController {
     this.settings.style.top = `${this.coords.top + 20}px`;
     this.settings.style.left = `${this.coords.left - 150}px`;
   }
+
+  async changeQuantity() {
+    const types = ['message', 'link', 'image', 'video', 'audio'];
+    types.forEach(async (type) => {
+      const length = await this.api.giveLength(type);
+      const number = length[1];
+      const el = this.body.querySelector(`#${type}`).nextSibling;
+      el.textContent = '';
+      el.textContent = `${number} ${type}`;
+    });
+  }
 }
 
-// Отображение аудио/видео/картинок в чате
 // Смайлики
-// Скачивание при отправке

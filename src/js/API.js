@@ -74,4 +74,25 @@ export default class API {
       console.log(error);
     }
   }
+
+  async giveLength(array) {
+    try {
+      this.formData = new FormData();
+      this.formData.set('array', array);
+
+      this.response = await fetch(
+        `http://localhost:7070/?array=${this.formData.get('array')}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        },
+      );
+      this.result = await this.response.json();
+      return this.result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }

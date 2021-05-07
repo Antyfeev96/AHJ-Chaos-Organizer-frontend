@@ -97,7 +97,7 @@ export default class GUI {
 
   createMessageContent(text, type) {
     switch (type) {
-      case 'text':
+      case 'message':
         this.messageContentEl = document.createElement('div');
         this.messageContentEl.textContent = text;
         break;
@@ -229,21 +229,21 @@ export default class GUI {
     this.sectionFilesEl = document.createElement('div');
     this.sectionFilesEl.className = 'section__files';
     this.sectionFilesEl.append(
-      this.createFile(228, 'messages'),
-      this.createFile(228, 'links'),
-      this.createFile(555, 'image'),
-      this.createFile(322, 'video'),
-      this.createFile(322, 'audio'),
+      this.createFile(0, 'message'),
+      this.createFile(0, 'link'),
+      this.createFile(0, 'image'),
+      this.createFile(0, 'video'),
+      this.createFile(0, 'audio'),
     );
     return this.sectionFilesEl;
   }
 
   createFile(number, type) {
     switch (type) {
-      case 'messages':
+      case 'message':
         this.icon = this.svg.createDocs();
         break;
-      case 'links':
+      case 'link':
         this.icon = this.svg.createLinks();
         break;
       case 'video':
@@ -271,9 +271,9 @@ export default class GUI {
     if (!Number.isInteger(number)) throw new Error('Количество файлов должно быть числом');
     switch (type) {
       case 'video':
-      case 'messages':
+      case 'message':
       case 'audio':
-      case 'links':
+      case 'link':
       case 'image':
         this.type = type.replace(/-/g, ' ');
         break;
