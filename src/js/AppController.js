@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 export default class AppController {
   constructor(gui, api) {
     this.gui = gui;
@@ -12,6 +13,7 @@ export default class AppController {
 
   initConstants() {
     this.body = document.body;
+    this.container = this.body.querySelector('.container');
     this.exitButton = this.body.querySelector('.section__exit');
     this.main = this.body.querySelector('.main');
     this.viewIcon = this.body.querySelector('#view');
@@ -31,6 +33,7 @@ export default class AppController {
     this.addSettingsListener();
     this.addFilesListener();
     this.addMediaListener();
+    this.addDropListener();
   }
 
   addExitListener() {
@@ -65,28 +68,32 @@ export default class AppController {
   addChangeListener() {
     this.fileControl.addEventListener('change', async () => {
       const file = this.fileControl.files[0];
-      this.name = file.name;
-      if (file.type.startsWith('image')) {
-        this.type = 'image';
-      } else if (file.type.startsWith('video')) {
-        this.type = 'video';
-      } else if (file.type.startsWith('audio')) {
-        this.type = 'audio';
-      }
-      const blob = URL.createObjectURL(file);
-      this.text = await new Response(blob).text();
-      const obj = {
-        name: this.name,
-        text: this.text,
-        type: this.type,
-      };
-      await this.api.sendMedia(obj);
-      // URL.revokeObjectURL(blob);
+      await this.sendFile(file);
     });
   }
 
+  async sendFile(file) {
+    this.name = file.name;
+    if (file.type.startsWith('image')) {
+      this.type = 'image';
+    } else if (file.type.startsWith('video')) {
+      this.type = 'video';
+    } else if (file.type.startsWith('audio')) {
+      this.type = 'audio';
+    }
+    const blob = URL.createObjectURL(file);
+    this.text = await new Response(blob).text();
+    const obj = {
+      name: this.name,
+      text: this.text,
+      type: this.type,
+    };
+    const { text, type, timestamp } = await this.api.sendMedia(obj);
+    this.gui.createMessage(text, type, timestamp);
+  }
+
   addPaperclipListener() {
-    this.paperclip.addEventListener('click', (e) => {
+    this.paperclip.addEventListener('click', async (e) => {
       e.preventDefault();
       e.stopPropagation();
       this.fileControl.dispatchEvent(new MouseEvent('click'));
@@ -156,6 +163,22 @@ export default class AppController {
           });
         }
       });
+    });
+  }
+
+  addDropListener() {
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach((eventName) => {
+      this.container.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      });
+    });
+
+    this.container.addEventListener('drop', async (e) => {
+      this.data = e.dataTransfer;
+      this.file = this.data.files[0]; // линтер ругается на эту строчку, но на мой взгляд,
+      // она более читабельна, чем [this.file] = this.data.files
+      await this.sendFile(this.file);
     });
   }
 

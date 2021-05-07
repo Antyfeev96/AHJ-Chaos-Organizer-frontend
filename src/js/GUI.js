@@ -97,15 +97,41 @@ export default class GUI {
 
   createMessageContent(text, type) {
     switch (type) {
-      default:
+      case 'text':
         this.messageContentEl = document.createElement('div');
+        this.messageContentEl.textContent = text;
         break;
       case 'link':
         this.messageContentEl = document.createElement('a');
         this.messageContentEl.href = text;
+        this.messageContentEl.textContent = text;
+        break;
+      case 'image':
+        this.messageContentEl = document.createElement('a');
+        this.messageContentEl.href = text;
+        this.messageContentEl.download = 'image';
+        this.img = document.createElement('img');
+        this.img.src = text;
+        this.messageContentEl.append(this.img);
+        break;
+      case 'video':
+        this.messageContentEl = document.createElement('video');
+        this.messageContentEl.controls = 'controls';
+        this.source = document.createElement('source');
+        this.source.src = text;
+        this.messageContentEl.append(this.source);
+        break;
+      case 'audio':
+        this.messageContentEl = document.createElement('audio');
+        this.messageContentEl.controls = 'controls';
+        this.source = document.createElement('source');
+        this.source.src = text;
+        this.messageContentEl.append(this.source);
+        break;
+      default:
+        break;
     }
     this.messageContentEl.className = 'message__content';
-    this.messageContentEl.textContent = text;
     return this.messageContentEl;
   }
 
