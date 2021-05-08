@@ -19,6 +19,7 @@ export default class AppController {
     this.viewIcon = this.body.querySelector('#view');
     this.input = this.body.querySelector('#input');
     this.settingsIcon = this.body.querySelector('#settings');
+    this.smileIcon = this.body.querySelector('#smile');
     this.paperclip = this.body.querySelector('#paperclip');
     this.fileControl = this.body.querySelector('.input-file');
     this.preview = this.body.querySelector('#preview');
@@ -35,6 +36,7 @@ export default class AppController {
     this.addFilesListener();
     this.addMediaListener();
     this.addDropListener();
+    this.emojiListener();
   }
 
   addExitListener() {
@@ -190,6 +192,27 @@ export default class AppController {
       this.file = this.data.files[0]; // линтер ругается на эту строчку, но на мой взгляд,
       // она более читабельна, чем [this.file] = this.data.files
       await this.sendFile(this.file);
+      await this.changeQuantity();
+    });
+  }
+
+  emojiListener() {
+    this.body.addEventListener('mouseover', (event) => {
+      if (event.target.id === 'smile' && this.body.querySelector('.emoji') === null) {
+        this.gui.createEmojiBox();
+        this.emoji = document.querySelector('.emoji');
+        this.smileCoords = this.smileIcon.getBoundingClientRect();
+        this.emoji.style.top = `${this.smileCoords.top - 125}px`;
+        this.emoji.style.left = `${this.smileCoords.left - 60}px`;
+      }
+    });
+
+    this.body.addEventListener('mouseover', (event) => {
+      if (this.emoji) {
+        if ((event.target.closest('.icon') || event.target.closest('.emoji')) === null) {
+          this.emoji.remove();
+        }
+      }
     });
   }
 

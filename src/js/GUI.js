@@ -397,9 +397,23 @@ export default class GUI {
     return this.item;
   }
 
-  // createPreview() {
-  //   this.preview = document.createElement('img');
-  //   this.preview.id = 'preview';
-  //   return this.preview;
-  // }
+  createEmojiBox() {
+    this.emojiBox = document.createElement('div');
+    this.emojiBox.className = 'emoji';
+    this.body.append(this.emojiBox);
+    const emojis = [
+      '😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😋', '😊',
+      '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙',
+    ];
+    for (const emoji of emojis) {
+      this.emojiBox.append(this.createEmoji(emoji));
+    }
+  }
+
+  createEmoji(emoji) {
+    this.emoji = document.createElement('div');
+    this.emoji.className = 'emoji__item';
+    this.emoji.textContent = emoji;
+    return this.emoji;
+  }
 }
