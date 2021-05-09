@@ -186,6 +186,7 @@ export default class GUI {
     this.inputButtonsEl.className = 'input-box__buttons';
     this.inputButtonsEl.append(
       this.svg.createSmile(),
+      this.svg.createCamera(),
       this.svg.createMicrophone(),
     );
     return this.inputButtonsEl;
@@ -248,10 +249,7 @@ export default class GUI {
     this.p2.textContent = `Долгота: ${long}`;
     this.p3 = document.createElement('p');
     this.p3.textContent = `Точность: плюс-минус ${accuracy} метров`;
-    this.button = document.createElement('button');
-    this.button.textContent = 'Обновить';
-    this.button.type = 'submit';
-    this.coordsEl.append(this.p1, this.p2, this.p3, this.button);
+    this.coordsEl.append(this.p1, this.p2, this.p3);
     this.sectionEl.append(this.coordsEl);
   }
 
@@ -331,7 +329,7 @@ export default class GUI {
     for (const message of array) {
       switch (message.type) {
         case 'link':
-        case 'text':
+        case 'message':
           this.windowContent.append(
             this.createTextItem(message.text, message.timestamp, message.type),
           );

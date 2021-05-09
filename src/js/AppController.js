@@ -18,13 +18,14 @@ export default class AppController {
     this.main = this.body.querySelector('.main');
     this.viewIcon = this.body.querySelector('#view');
     this.input = this.body.querySelector('#input');
+    this.microphone = this.body.querySelector('#microphone');
     this.settingsIcon = this.body.querySelector('#settings');
     this.smileIcon = this.body.querySelector('#smile');
     this.paperclip = this.body.querySelector('#paperclip');
     this.fileControl = this.body.querySelector('.input-file');
     this.preview = this.body.querySelector('#preview');
     await this.changeQuantity();
-    this.getGeolocation();
+    this.watchGeolocation();
   }
 
   initListeners() {
@@ -38,6 +39,7 @@ export default class AppController {
     this.addMediaListener();
     this.addDropListener();
     this.emojiListener();
+    this.microphoneListener();
   }
 
   addExitListener() {
@@ -180,6 +182,54 @@ export default class AppController {
     });
   }
 
+  microphoneListener() {
+    this.microphone.addEventListener('click', async () => {
+      if (!this.recorder || this.recorder.state === 'inactive') {
+        this.audioStreamListener();
+      } else {
+        this.recorder.stop();
+        this.stream.getTracks().forEach((track) => track.stop());
+      }
+    });
+  }
+
+  async audioStreamListener() {
+    this.audio = document.querySelector('#audio');
+    this.stream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: false,
+    });
+    this.recorder = new MediaRecorder(this.stream);
+    this.chunks = [];
+
+    this.recorder.addEventListener('start', () => {
+      this.microphone.classList.toggle('active');
+      console.log('recording started');
+    });
+
+    this.recorder.addEventListener('dataavailable', (event) => {
+      this.chunks.push(event.data);
+    });
+
+    this.recorder.addEventListener('stop', async () => {
+      this.microphone.classList.toggle('active');
+      console.log('recording stopped');
+      const blob = new Blob(this.chunks);
+      this.src = URL.createObjectURL(blob);
+
+      const obj = {
+        name: 'voice message',
+        text: this.src,
+        type: 'audio',
+      };
+
+      const { text, type, timestamp } = await this.api.sendMedia(obj);
+      this.gui.createMessage(text, type, timestamp);
+    });
+
+    this.recorder.start();
+  }
+
   addDropListener() {
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach((eventName) => {
       this.container.addEventListener(eventName, (e) => {
@@ -240,7 +290,7 @@ export default class AppController {
     });
   }
 
-  getGeolocation() {
+  watchGeolocation() {
     if (navigator.geolocation) {
       this.options = {
         enableHighAccuracy: true,
@@ -250,6 +300,10 @@ export default class AppController {
 
       const success = (pos) => {
         const { coords } = pos;
+        console.log('Ваше текущее местоположение:');
+        console.log(`Широта: ${coords.latitude}`);
+        console.log(`Долгота: ${coords.longitude}`);
+        console.log(`Плюс-минус ${coords.accuracy} метров.`);
         if (this.body.querySelector('.section__coords')) {
           this.body.querySelector('.section__coords').remove();
         }
@@ -260,7 +314,7 @@ export default class AppController {
         console.warn(`ERROR(${err.code}): ${err.message}`);
       };
 
-      navigator.geolocation.watchPosition(success, error, this.options);
+      this.geoId = navigator.geolocation.watchPosition(success, error, this.options);
     }
   }
 }

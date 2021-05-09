@@ -122,10 +122,10 @@
         top: -1000px;
       }
 
-      &__paperclip {
-        width: 16px;
-        height: 16px;
-      }
+      // &__paperclip {
+      //   width: 16px;
+      //   height: 16px;
+      // }
 
       &__input {
         margin-left: 15px;
@@ -147,8 +147,12 @@
           fill: black;
         }
 
-        &:nth-of-type(even) {
-          margin-left: 20px;
+        &.active {
+          fill: rgb(0, 102, 255);
+        }
+
+        &:nth-of-type(n + 2) {
+          margin-left: 10px;
         }
       }
     }
@@ -227,11 +231,6 @@
 
       p {
         margin-top: 10px;
-      }
-
-      button {
-        margin-top: 15px;
-        cursor: pointer;
       }
     }
   }
