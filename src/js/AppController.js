@@ -18,6 +18,7 @@ export default class AppController {
     this.main = this.body.querySelector('.main');
     this.viewIcon = this.body.querySelector('#view');
     this.input = this.body.querySelector('#input');
+    this.camera = this.body.querySelector('#camera');
     this.microphone = this.body.querySelector('#microphone');
     this.settingsIcon = this.body.querySelector('#settings');
     this.smileIcon = this.body.querySelector('#smile');
@@ -39,6 +40,7 @@ export default class AppController {
     this.addMediaListener();
     this.addDropListener();
     this.emojiListener();
+    this.cameraListener();
     this.microphoneListener();
   }
 
@@ -182,6 +184,17 @@ export default class AppController {
     });
   }
 
+  cameraListener() {
+    this.camera.addEventListener('click', async () => {
+      if (!this.recorder || this.recorder.state === 'inactive') {
+        this.videoStreamListener();
+      } else {
+        this.recorder.stop();
+        this.stream.getTracks().forEach((track) => track.stop());
+      }
+    });
+  }
+
   microphoneListener() {
     this.microphone.addEventListener('click', async () => {
       if (!this.recorder || this.recorder.state === 'inactive') {
@@ -193,8 +206,44 @@ export default class AppController {
     });
   }
 
+  async videoStreamListener() {
+    this.stream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: true,
+    });
+    this.recorder = new MediaRecorder(this.stream);
+    this.chunks = [];
+
+    this.recorder.addEventListener('start', () => {
+      this.camera.classList.toggle('active');
+      console.log('recording started');
+    });
+
+    this.recorder.addEventListener('dataavailable', (event) => {
+      this.chunks.push(event.data);
+    });
+
+    this.recorder.addEventListener('stop', async () => {
+      this.camera.classList.toggle('active');
+      console.log('recording stopped');
+      const blob = new Blob(this.chunks);
+      this.src = URL.createObjectURL(blob);
+
+      const obj = {
+        name: 'video message',
+        text: this.src,
+        type: 'video',
+      };
+
+      const { text, type, timestamp } = await this.api.sendMedia(obj);
+      console.log(text, type, timestamp);
+      this.gui.createMessage(text, type, timestamp);
+    });
+
+    this.recorder.start();
+  }
+
   async audioStreamListener() {
-    this.audio = document.querySelector('#audio');
     this.stream = await navigator.mediaDevices.getUserMedia({
       audio: true,
       video: false,
