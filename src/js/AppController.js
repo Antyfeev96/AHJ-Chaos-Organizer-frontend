@@ -24,6 +24,7 @@ export default class AppController {
     this.fileControl = this.body.querySelector('.input-file');
     this.preview = this.body.querySelector('#preview');
     await this.changeQuantity();
+    this.getGeolocation();
   }
 
   initListeners() {
@@ -202,8 +203,11 @@ export default class AppController {
         this.gui.createEmojiBox();
         this.emoji = document.querySelector('.emoji');
         this.smileCoords = this.smileIcon.getBoundingClientRect();
-        this.emoji.style.top = `${this.smileCoords.top - 125}px`;
-        this.emoji.style.left = `${this.smileCoords.left - 60}px`;
+        this.emoji.style.top = `${this.smileCoords.y - 130}px`;
+        this.emoji.style.left = `${this.smileCoords.x - 60}px`;
+        this.emoji.addEventListener('click', (e) => {
+          this.input.value += e.target.textContent;
+        });
       }
     });
 
@@ -235,6 +239,28 @@ export default class AppController {
       el.textContent = `${number} ${type}`;
     });
   }
-}
 
-// Смайлики
+  getGeolocation() {
+    if (navigator.geolocation) {
+      this.options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0,
+      };
+
+      const success = (pos) => {
+        const { coords } = pos;
+        if (this.body.querySelector('.section__coords')) {
+          this.body.querySelector('.section__coords').remove();
+        }
+        this.gui.createSectionCoords(coords.latitude, coords.longitude, coords.accuracy);
+      };
+
+      const error = (err) => {
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+      };
+
+      navigator.geolocation.watchPosition(success, error, this.options);
+    }
+  }
+}

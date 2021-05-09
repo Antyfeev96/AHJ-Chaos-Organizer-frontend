@@ -238,6 +238,23 @@ export default class GUI {
     return this.sectionFilesEl;
   }
 
+  createSectionCoords(lang, long, accuracy) {
+    this.coordsEl = document.createElement('div');
+    this.coordsEl.className = 'section__coords';
+    this.coordsEl.textContent = 'Ваше текущее местоположение';
+    this.p1 = document.createElement('p');
+    this.p1.textContent = `Широта: ${lang}`;
+    this.p2 = document.createElement('p');
+    this.p2.textContent = `Долгота: ${long}`;
+    this.p3 = document.createElement('p');
+    this.p3.textContent = `Точность: плюс-минус ${accuracy} метров`;
+    this.button = document.createElement('button');
+    this.button.textContent = 'Обновить';
+    this.button.type = 'submit';
+    this.coordsEl.append(this.p1, this.p2, this.p3, this.button);
+    this.sectionEl.append(this.coordsEl);
+  }
+
   createFile(number, type) {
     switch (type) {
       case 'message':
