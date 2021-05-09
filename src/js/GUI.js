@@ -377,7 +377,7 @@ export default class GUI {
     this.item = document.createElement('div');
     this.item.className = 'files-window__item';
     this.itemContent = document.createElement('img');
-    this.itemContent.src = text;
+    this.itemContent.src = `lazy${text}`;
     this.itemTime = document.createElement('span');
     this.itemTime.textContent = timestamp;
     this.item.append(this.itemContent, this.itemTime);

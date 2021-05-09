@@ -158,8 +158,8 @@ export default class AppController {
           document.getElementById('close').addEventListener('click', () => {
             this.body.querySelector('.files-window').remove();
           });
-          await this.changeQuantity();
         }
+        await this.changeQuantity();
       });
     });
   }
@@ -175,8 +175,12 @@ export default class AppController {
             type,
           });
           this.body.append(this.gui.createFilesWindow(this.array));
+          this.files = this.body.querySelector('.files-window');
           document.getElementById('close').addEventListener('click', () => {
             this.body.querySelector('.files-window').remove();
+          });
+          document.addEventListener('mouseover', (e) => {
+            this.lazyLoad(e);
           });
         }
         await this.changeQuantity();
@@ -187,7 +191,7 @@ export default class AppController {
   cameraListener() {
     this.camera.addEventListener('click', async () => {
       if (!this.recorder || this.recorder.state === 'inactive') {
-        this.videoStreamListener();
+        this.videoStream();
       } else {
         this.recorder.stop();
         this.stream.getTracks().forEach((track) => track.stop());
@@ -198,7 +202,7 @@ export default class AppController {
   microphoneListener() {
     this.microphone.addEventListener('click', async () => {
       if (!this.recorder || this.recorder.state === 'inactive') {
-        this.audioStreamListener();
+        this.audioStream();
       } else {
         this.recorder.stop();
         this.stream.getTracks().forEach((track) => track.stop());
@@ -206,7 +210,7 @@ export default class AppController {
     });
   }
 
-  async videoStreamListener() {
+  async videoStream() {
     this.stream = await navigator.mediaDevices.getUserMedia({
       audio: true,
       video: true,
@@ -243,7 +247,7 @@ export default class AppController {
     this.recorder.start();
   }
 
-  async audioStreamListener() {
+  async audioStream() {
     this.stream = await navigator.mediaDevices.getUserMedia({
       audio: true,
       video: false,
@@ -304,6 +308,7 @@ export default class AppController {
         this.smileCoords = this.smileIcon.getBoundingClientRect();
         this.emoji.style.top = `${this.smileCoords.y - 130}px`;
         this.emoji.style.left = `${this.smileCoords.x - 60}px`;
+        this.smileIcon.classList.add('active');
         this.emoji.addEventListener('click', (e) => {
           this.input.value += e.target.textContent;
         });
@@ -314,6 +319,7 @@ export default class AppController {
       if (this.emoji) {
         if ((event.target.closest('.icon') || event.target.closest('.emoji')) === null) {
           this.emoji.remove();
+          this.smileIcon.classList.remove('active');
         }
       }
     });
@@ -364,6 +370,15 @@ export default class AppController {
       };
 
       this.geoId = navigator.geolocation.watchPosition(success, error, this.options);
+    }
+  }
+
+  lazyLoad(e) {
+    this.arr = Array.from(this.body.querySelectorAll('.files-window__item'));
+    if (this.arr.indexOf(e.target.closest('.files-window__item')) % 5 === 4) {
+      for (let i = 0; i < this.arr.indexOf(e.target.closest('.files-window__item')) + 5; i += 1) {
+        this.arr[i].querySelector('img').src = this.arr[i].querySelector('img').src.replace('lazy', '');
+      }
     }
   }
 }
