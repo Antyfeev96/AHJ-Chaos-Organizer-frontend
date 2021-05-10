@@ -59,8 +59,10 @@
 
 * Поддержка смайликов (emoji): с помощью соответствующей иконки можно украсить сообщение смайликом 😃
 
-![image](https://user-images.githubusercontent.com/60137521/117652520-ee3db200-b19b-11eb-92b1-08dd807b8d9c.png)
 ![image](https://user-images.githubusercontent.com/60137521/117652540-f72e8380-b19b-11eb-8dcc-1d9a9fc1a2ec.png)
+
+![image](https://user-images.githubusercontent.com/60137521/117652520-ee3db200-b19b-11eb-92b1-08dd807b8d9c.png)
+
 
 
 
