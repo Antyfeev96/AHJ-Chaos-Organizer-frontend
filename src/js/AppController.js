@@ -117,12 +117,10 @@ export default class AppController {
           text,
           type,
           timestamp,
-          length,
         } = await this.api.request('POST', {
           type: this.type,
           text: this.input.value,
         });
-        console.log(length);
         this.gui.createMessage(text, type, timestamp);
         this.input.value = '';
         await this.changeQuantity();
@@ -240,7 +238,6 @@ export default class AppController {
       };
 
       const { text, type, timestamp } = await this.api.sendMedia(obj);
-      console.log(text, type, timestamp);
       this.gui.createMessage(text, type, timestamp);
     });
 
@@ -355,10 +352,6 @@ export default class AppController {
 
       const success = (pos) => {
         const { coords } = pos;
-        console.log('Ваше текущее местоположение:');
-        console.log(`Широта: ${coords.latitude}`);
-        console.log(`Долгота: ${coords.longitude}`);
-        console.log(`Плюс-минус ${coords.accuracy} метров.`);
         if (this.body.querySelector('.section__coords')) {
           this.body.querySelector('.section__coords').remove();
         }
@@ -375,9 +368,15 @@ export default class AppController {
 
   lazyLoad(e) {
     this.arr = Array.from(this.body.querySelectorAll('.files-window__item'));
-    if (this.arr.indexOf(e.target.closest('.files-window__item')) % 5 === 4) {
+    const index = this.arr.indexOf(e.target.closest('.files-window__item'));
+    if (index % 5 === 4 || index === 0) {
       for (let i = 0; i < this.arr.indexOf(e.target.closest('.files-window__item')) + 5; i += 1) {
-        this.arr[i].querySelector('img').src = this.arr[i].querySelector('img').src.replace('lazy', '');
+        const element = this.arr[i].querySelector('img');
+        if (element !== null) {
+          this.arr[i].querySelector('img').src = this.arr[i].querySelector('img').src.replace('lazy', '');
+        } else {
+          this.arr[i].querySelector('source').src = this.arr[i].querySelector('source').src.replace('lazy', '');
+        }
       }
     }
   }

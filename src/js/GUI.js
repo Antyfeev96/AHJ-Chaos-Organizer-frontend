@@ -1,6 +1,3 @@
-/* eslint-disable no-case-declarations */
-/* eslint-disable consistent-return */
-/* eslint-disable class-methods-use-this */
 export default class GUI {
   constructor(svg) {
     this.body = document.body;
