@@ -10,7 +10,7 @@ export default class API {
           this.formData.set('type', type);
 
           this.response = await fetch(
-            `http://localhost:7070/?text=${this.formData.get('text')}&type=${this.formData.get('type')}`,
+            `https://ahj-chaos-organizer-backend.herokuapp.com/?text=${this.formData.get('text')}&type=${this.formData.get('type')}`,
             {
               method,
               headers: {
@@ -31,7 +31,7 @@ export default class API {
           this.formData.set('type', type);
 
           this.response = await fetch(
-            `http://localhost:7070/?text=${this.formData.get('text')}&type=${this.formData.get('type')}`,
+            `https://ahj-chaos-organizer-backend.herokuapp.com/?text=${this.formData.get('text')}&type=${this.formData.get('type')}`,
             {
               method,
               headers: {
@@ -59,7 +59,7 @@ export default class API {
       this.formData.set('type', type);
 
       this.response = await fetch(
-        `http://localhost:7070/?name=${this.formData.get('name')}&text=${this.formData.get('text')}&type=${this.formData.get('type')}`,
+        `https://ahj-chaos-organizer-backend.herokuapp.com/?name=${this.formData.get('name')}&text=${this.formData.get('text')}&type=${this.formData.get('type')}`,
         {
           method: 'POST',
           headers: {
@@ -81,7 +81,7 @@ export default class API {
       this.formData.set('array', array);
 
       this.response = await fetch(
-        `http://localhost:7070/?array=${this.formData.get('array')}`,
+        `https://ahj-chaos-organizer-backend.herokuapp.com/?array=${this.formData.get('array')}`,
         {
           method: 'POST',
           headers: {
