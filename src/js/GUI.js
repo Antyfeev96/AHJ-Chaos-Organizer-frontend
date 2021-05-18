@@ -24,7 +24,7 @@ export default class GUI {
     this.mainEl.append(
       this.createHeader(),
       this.createChat(),
-      this.createInputBox(),
+      this.createFormBox(),
     );
     return this.mainEl;
   }
@@ -149,9 +149,10 @@ export default class GUI {
     return this.messageTimestampEl;
   }
 
-  createInputBox() {
-    this.inputBoxEl = document.createElement('div');
+  createFormBox() {
+    this.inputBoxEl = document.createElement('form');
     this.inputBoxEl.className = 'input-box';
+    this.inputBoxEl.id = 'form';
     this.inputBoxEl.append(
       this.createInputFile(),
       this.svg.createPaperclip(),

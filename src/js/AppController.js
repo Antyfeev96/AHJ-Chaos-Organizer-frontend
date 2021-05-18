@@ -25,6 +25,7 @@ export default class AppController {
     this.paperclip = this.body.querySelector('#paperclip');
     this.fileControl = this.body.querySelector('.input-file');
     this.preview = this.body.querySelector('#preview');
+    this.form = this.body.querySelector('#form');
     await this.changeQuantity();
     this.watchGeolocation();
   }
@@ -76,28 +77,31 @@ export default class AppController {
   addChangeListener() {
     this.fileControl.addEventListener('change', async () => {
       const file = this.fileControl.files[0];
-      await this.sendFile(file);
-      await this.changeQuantity();
+      const formData = new FormData();
+      formData.append('image', file);
+      await this.sendFile(formData);
+      // await this.changeQuantity();
     });
   }
 
   async sendFile(file) {
-    this.name = file.name;
-    if (file.type.startsWith('image')) {
-      this.type = 'image';
-    } else if (file.type.startsWith('video')) {
-      this.type = 'video';
-    } else if (file.type.startsWith('audio')) {
-      this.type = 'audio';
-    }
-    const blob = URL.createObjectURL(file);
-    this.text = await new Response(blob).text();
-    const obj = {
-      name: this.name,
-      text: this.text,
-      type: this.type,
-    };
-    const { text, type, timestamp } = await this.api.sendMedia(obj);
+    // this.name = file.name;
+    // if (file.type.startsWith('image')) {
+    //   this.type = 'image';
+    // } else if (file.type.startsWith('video')) {
+    //   this.type = 'video';
+    // } else if (file.type.startsWith('audio')) {
+    //   this.type = 'audio';
+    // }
+    // const blob = URL.createObjectURL(file);
+    // this.text = await new Response(blob).text();
+    // const obj = {
+    //   name: this.name,
+    //   text: this.text,
+    //   type: this.type,
+    // };
+    const { text, type, timestamp } = await this.api.sendImg(file);
+    console.log(text, type, timestamp);
     this.gui.createMessage(text, type, timestamp);
   }
 
