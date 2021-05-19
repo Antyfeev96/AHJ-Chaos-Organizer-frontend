@@ -117,15 +117,10 @@
       height: 7%;
       padding: 10px;
 
-      .input-file {
+      .input-file, #submit-button {
         position: absolute;
         top: -1000px;
       }
-
-      // &__paperclip {
-      //   width: 16px;
-      //   height: 16px;
-      // }
 
       &__input {
         margin-left: 15px;

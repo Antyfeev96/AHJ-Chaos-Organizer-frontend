@@ -26,7 +26,8 @@ export default class AppController {
     this.fileControl = this.body.querySelector('.input-file');
     this.preview = this.body.querySelector('#preview');
     this.form = this.body.querySelector('#form');
-    await this.changeQuantity();
+    this.submit = this.body.querySelector('#submit');
+    // await this.changeQuantity();
     this.watchGeolocation();
   }
 
@@ -43,6 +44,7 @@ export default class AppController {
     this.emojiListener();
     this.cameraListener();
     this.microphoneListener();
+    // this.submitListener();
   }
 
   addExitListener() {
@@ -78,32 +80,50 @@ export default class AppController {
     this.fileControl.addEventListener('change', async () => {
       const file = this.fileControl.files[0];
       const formData = new FormData();
-      formData.append('image', file);
-      await this.sendFile(formData);
-      // await this.changeQuantity();
+      formData.append('file', file);
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', 'http://localhost:7070/');
+      xhr.send(formData);
+      xhr.onload = () => {
+        if (xhr.status !== 200) {
+          console.log(`Ошибка ${xhr.status}: ${xhr.statusText}`);
+        } else {
+          console.log(`Готово, получили ${xhr.response.length} байт`);
+        }
+      };
+      // this.api.sendImg(file);
+      // this.form.dispatchEvent(new Event('submit'));
+      // this.body.querySelector('#form').submit();
     });
   }
 
-  async sendFile(file) {
-    // this.name = file.name;
-    // if (file.type.startsWith('image')) {
-    //   this.type = 'image';
-    // } else if (file.type.startsWith('video')) {
-    //   this.type = 'video';
-    // } else if (file.type.startsWith('audio')) {
-    //   this.type = 'audio';
-    // }
-    // const blob = URL.createObjectURL(file);
-    // this.text = await new Response(blob).text();
-    // const obj = {
-    //   name: this.name,
-    //   text: this.text,
-    //   type: this.type,
-    // };
-    const { text, type, timestamp } = await this.api.sendImg(file);
-    console.log(text, type, timestamp);
-    this.gui.createMessage(text, type, timestamp);
-  }
+  // submitListener(file) {
+  //   this.body.querySelector('#form').addEventListener('submit', async (e) => {
+  //     e.preventDefault();
+  //     const file = e.target.elements[0].files[0];
+  //     const { text, type, timestamp } = await this.api.sendImg(file);
+  //     console.log(text, type, timestamp);
+  //     this.gui.createMessage(text, type, timestamp);
+  //   });
+  // }
+
+  // async sendFile(file) {
+  //   this.name = file.name;
+  //   if (file.type.startsWith('image')) {
+  //     this.type = 'image';
+  //   } else if (file.type.startsWith('video')) {
+  //     this.type = 'video';
+  //   } else if (file.type.startsWith('audio')) {
+  //     this.type = 'audio';
+  //   }
+  //   const blob = URL.createObjectURL(file);
+  //   this.text = await new Response(blob).text();
+  //   const obj = {
+  //     name: this.name,
+  //     text: this.text,
+  //     type: this.type,
+  //   };
+  // }
 
   addPaperclipListener() {
     this.paperclip.addEventListener('click', async (e) => {
@@ -335,16 +355,16 @@ export default class AppController {
     this.settings.style.left = `${this.coords.left - 150}px`;
   }
 
-  async changeQuantity() {
-    const types = ['message', 'link', 'image', 'video', 'audio'];
-    types.forEach(async (type) => {
-      const length = await this.api.giveLength(type);
-      const number = length[1];
-      const el = this.body.querySelector(`#${type}`).nextSibling;
-      el.textContent = '';
-      el.textContent = `${number} ${type}`;
-    });
-  }
+  // async changeQuantity() {
+  //   const types = ['message', 'link', 'image', 'video', 'audio'];
+  //   types.forEach(async (type) => {
+  //     const length = await this.api.giveLength(type);
+  //     const number = length[1];
+  //     const el = this.body.querySelector(`#${type}`).nextSibling;
+  //     el.textContent = '';
+  //     el.textContent = `${number} ${type}`;
+  //   });
+  // }
 
   watchGeolocation() {
     if (navigator.geolocation) {

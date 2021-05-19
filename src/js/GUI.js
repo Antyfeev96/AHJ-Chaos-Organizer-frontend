@@ -155,11 +155,19 @@ export default class GUI {
     this.inputBoxEl.id = 'form';
     this.inputBoxEl.append(
       this.createInputFile(),
+      this.createFormSubmit(),
       this.svg.createPaperclip(),
       this.createInputEl(),
       this.createInputButtons(),
     );
     return this.inputBoxEl;
+  }
+
+  createFormSubmit() {
+    this.submit = document.createElement('input');
+    this.submit.type = 'submit';
+    this.submit.id = 'submit-button';
+    return this.submit;
   }
 
   createInputFile() {

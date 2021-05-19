@@ -75,13 +75,15 @@ export default class API {
     }
   }
 
-  async sendImg(form) {
+  async sendImg(file) {
     try {
+      const formData = new FormData();
+      formData.append('image', file);
       this.response = await fetch(
-        'http://localhost:7070/mediadata',
+        'http://localhost:7070/?data=media',
         {
           method: 'POST',
-          body: new FormData(form),
+          body: formData,
         },
       );
       this.result = await this.response.json();
