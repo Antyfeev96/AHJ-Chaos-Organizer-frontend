@@ -80,7 +80,7 @@ export default class API {
       const formData = new FormData();
       formData.append('image', file);
       this.response = await fetch(
-        'http://localhost:7070/?data=media',
+        'http://localhost:7070/?send=media',
         {
           method: 'POST',
           body: formData,

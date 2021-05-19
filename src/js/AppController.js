@@ -88,12 +88,14 @@ export default class AppController {
         if (xhr.status !== 200) {
           console.log(`Ошибка ${xhr.status}: ${xhr.statusText}`);
         } else {
+          const response = xhr.response;
+          console.log(response);
+          this.img = document.createElement('img');
+          this.img.src = `../${response}`;
+          this.body.append(this.img);
           console.log(`Готово, получили ${xhr.response.length} байт`);
         }
       };
-      // this.api.sendImg(file);
-      // this.form.dispatchEvent(new Event('submit'));
-      // this.body.querySelector('#form').submit();
     });
   }
 
