@@ -13,6 +13,7 @@ export default class AppController {
 
   async initConstants() {
     this.body = document.body;
+    this.url = 'https://ahj-chaos-organizer-backend.herokuapp.com';
     this.container = this.body.querySelector('.container');
     this.exitButton = this.body.querySelector('.section__exit');
     this.main = this.body.querySelector('.main');
@@ -38,13 +39,14 @@ export default class AppController {
     this.addInputListener();
     this.addChangeListener();
     this.addSettingsListener();
-    this.addFilesListener();
-    this.addMediaListener();
+    // this.addFilesListener();
+    // this.addMediaListener();
     this.addDropListener();
     this.emojiListener();
     this.cameraListener();
     this.microphoneListener();
     // this.submitListener();
+    this.onLoadListener();
   }
 
   addExitListener() {
@@ -78,36 +80,22 @@ export default class AppController {
 
   addChangeListener() {
     this.fileControl.addEventListener('change', async () => {
-      const file = this.fileControl.files[0];
-      const formData = new FormData();
-      formData.append('file', file);
-      const xhr = new XMLHttpRequest();
-      xhr.open('POST', 'http://localhost:7070/');
-      xhr.send(formData);
-      xhr.onload = () => {
-        if (xhr.status !== 200) {
-          console.log(`Ошибка ${xhr.status}: ${xhr.statusText}`);
-        } else {
-          const response = xhr.response;
-          console.log(response);
-          this.img = document.createElement('img');
-          this.img.src = `../${response}`;
-          this.body.append(this.img);
-          console.log(`Готово, получили ${xhr.response.length} байт`);
-        }
-      };
+      const [file] = this.fileControl.files;
+      const { link, type, timestamp } = await this.api.sendMedia(file);
+      this.gui.createMessage(`${this.url}/${link}`, type, timestamp);
     });
   }
 
-  // submitListener(file) {
-  //   this.body.querySelector('#form').addEventListener('submit', async (e) => {
-  //     e.preventDefault();
-  //     const file = e.target.elements[0].files[0];
-  //     const { text, type, timestamp } = await this.api.sendImg(file);
-  //     console.log(text, type, timestamp);
-  //     this.gui.createMessage(text, type, timestamp);
-  //   });
-  // }
+  async onLoadListener() {
+    Array.from(this.body.querySelectorAll('.file')).forEach((file) => {
+      file.addEventListener('click', async (e) => {
+        if (document.querySelector('.files-window') !== null) return;
+        const type = e.target.closest('.file').classList[1];
+        const response = await this.api.takeSideMedia(type);
+        console.log(response);
+      });
+    });
+  }
 
   // async sendFile(file) {
   //   this.name = file.name;
@@ -149,7 +137,7 @@ export default class AppController {
         });
         this.gui.createMessage(text, type, timestamp);
         this.input.value = '';
-        await this.changeQuantity();
+        // await this.changeQuantity();
       }
     });
   }
@@ -168,49 +156,49 @@ export default class AppController {
     });
   }
 
-  addFilesListener() {
-    Array.from(this.body.querySelectorAll('.file')).forEach((file) => {
-      file.addEventListener('click', async () => {
-        if (document.querySelector('.files-window') !== null) return;
-        const type = file.querySelector('svg').id;
-        if (type === 'message' || type === 'link') {
-          this.array = await this.api.request('GET', {
-            text: `give-${type}`,
-            type,
-          });
-          this.body.append(this.gui.createFilesWindow(this.array));
-          document.getElementById('close').addEventListener('click', () => {
-            this.body.querySelector('.files-window').remove();
-          });
-        }
-        await this.changeQuantity();
-      });
-    });
-  }
+  // addFilesListener() {
+  //   Array.from(this.body.querySelectorAll('.file')).forEach((file) => {
+  //     file.addEventListener('click', async () => {
+  //       if (document.querySelector('.files-window') !== null) return;
+  //       const type = file.querySelector('svg').id;
+  //       if (type === 'message' || type === 'link') {
+  //         this.array = await this.api.request('GET', {
+  //           text: `give-${type}`,
+  //           type,
+  //         });
+  //         this.body.append(this.gui.createFilesWindow(this.array));
+  //         document.getElementById('close').addEventListener('click', () => {
+  //           this.body.querySelector('.files-window').remove();
+  //         });
+  //       }
+  //       // await this.changeQuantity();
+  //     });
+  //   });
+  // }
 
-  addMediaListener() {
-    Array.from(this.body.querySelectorAll('.file')).forEach((file) => {
-      file.addEventListener('click', async () => {
-        if (document.querySelector('.files-window') !== null) return;
-        const type = file.querySelector('svg').id;
-        if (type === 'video' || type === 'image' || type === 'audio') {
-          this.array = await this.api.request('GET', {
-            text: `give-${type}`,
-            type,
-          });
-          this.body.append(this.gui.createFilesWindow(this.array));
-          this.files = this.body.querySelector('.files-window');
-          document.getElementById('close').addEventListener('click', () => {
-            this.body.querySelector('.files-window').remove();
-          });
-          document.addEventListener('mouseover', (e) => {
-            this.lazyLoad(e);
-          });
-        }
-        await this.changeQuantity();
-      });
-    });
-  }
+  // addMediaListener() {
+  //   Array.from(this.body.querySelectorAll('.file')).forEach((file) => {
+  //     file.addEventListener('click', async () => {
+  //       if (document.querySelector('.files-window') !== null) return;
+  //       const type = file.querySelector('svg').id;
+  //       if (type === 'video' || type === 'image' || type === 'audio') {
+  //         this.array = await this.api.request('GET', {
+  //           text: `give-${type}`,
+  //           type,
+  //         });
+  //         this.body.append(this.gui.createFilesWindow(this.array));
+  //         this.files = this.body.querySelector('.files-window');
+  //         document.getElementById('close').addEventListener('click', () => {
+  //           this.body.querySelector('.files-window').remove();
+  //         });
+  //         document.addEventListener('mouseover', (e) => {
+  //           this.lazyLoad(e);
+  //         });
+  //       }
+  //       // await this.changeQuantity();
+  //     });
+  //   });
+  // }
 
   cameraListener() {
     this.camera.addEventListener('click', async () => {
@@ -319,7 +307,7 @@ export default class AppController {
       this.file = this.data.files[0]; // линтер ругается на эту строчку, но на мой взгляд,
       // она более читабельна, чем [this.file] = this.data.files
       await this.sendFile(this.file);
-      await this.changeQuantity();
+      // await this.changeQuantity();
     });
   }
 

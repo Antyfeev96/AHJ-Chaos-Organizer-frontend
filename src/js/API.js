@@ -1,5 +1,9 @@
 /* eslint-disable consistent-return */
 export default class API {
+  constructor() {
+    this.url = 'https://ahj-chaos-organizer-backend.herokuapp.com';
+  }
+
   async request(method, obj) {
     const { text, type } = obj;
     switch (method) {
@@ -10,7 +14,7 @@ export default class API {
           this.formData.set('type', type);
 
           this.response = await fetch(
-            `http://localhost:7070/?text=${this.formData.get('text')}&type=${this.formData.get('type')}`,
+            `${this.url}/?text=${this.formData.get('text')}&type=${this.formData.get('type')}`,
             {
               method,
               headers: {
@@ -31,7 +35,7 @@ export default class API {
           this.formData.set('type', type);
 
           this.response = await fetch(
-            `http://localhost:7070/?text=${this.formData.get('text')}&type=${this.formData.get('type')}`,
+            `${this.url}/?text=${this.formData.get('text')}&type=${this.formData.get('type')}`,
             {
               method,
               headers: {
@@ -50,37 +54,12 @@ export default class API {
     }
   }
 
-  async sendMedia(obj) {
-    try {
-      const { name, text, type } = obj;
-      this.formData = new FormData();
-      this.formData.set('name', name);
-      this.formData.set('text', text);
-      this.formData.set('type', type);
-
-      this.response = await fetch(
-        `http://localhost:7070/?name=${this.formData.get('name')}&text=${this.formData.get('text')}&type=${this.formData.get('type')}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        },
-      );
-      this.result = await this.response.json();
-      console.log(this.result);
-      return this.result;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async sendImg(file) {
+  async sendMedia(file) {
     try {
       const formData = new FormData();
-      formData.append('image', file);
+      formData.append('file', file);
       this.response = await fetch(
-        'http://localhost:7070/?send=media',
+        this.url,
         {
           method: 'POST',
           body: formData,
@@ -99,7 +78,7 @@ export default class API {
       this.formData.set('array', array);
 
       this.response = await fetch(
-        `http://localhost:7070/?array=${this.formData.get('array')}`,
+        `${this.url}/?array=${this.formData.get('array')}`,
         {
           method: 'POST',
           headers: {
@@ -108,6 +87,28 @@ export default class API {
         },
       );
       this.result = await this.response.json();
+      return this.result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async takeSideMedia(type) {
+    try {
+      this.formData = new FormData();
+      this.formData.set('media', type);
+
+      this.response = await fetch(
+        `${this.url}/?media=${this.formData.get('media')}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        },
+      );
+      this.result = await this.response.json();
+      console.log(this.result);
       return this.result;
     } catch (error) {
       console.log(error);

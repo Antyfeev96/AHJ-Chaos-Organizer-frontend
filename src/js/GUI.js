@@ -280,7 +280,7 @@ export default class GUI {
         throw new Error('Неверный тип данных');
     }
     this.fileEl = document.createElement('div');
-    this.fileEl.className = 'file';
+    this.fileEl.className = `file ${type}`;
     this.fileEl.append(
       this.icon,
       this.createQuantity(number, type),
