@@ -1,4 +1,3 @@
-/* eslint-disable prefer-destructuring */
 export default class AppController {
   constructor(gui, api) {
     this.gui = gui;
@@ -28,7 +27,7 @@ export default class AppController {
     this.preview = this.body.querySelector('#preview');
     this.form = this.body.querySelector('#form');
     this.submit = this.body.querySelector('#submit');
-    // await this.changeQuantity();
+    await this.changeQuantity();
     this.watchGeolocation();
   }
 
@@ -37,16 +36,15 @@ export default class AppController {
     this.addViewListener();
     this.addPaperclipListener();
     this.addInputListener();
-    this.addChangeListener();
+    this.addMediaFileListener();
     this.addSettingsListener();
-    // this.addFilesListener();
-    // this.addMediaListener();
     this.addDropListener();
     this.emojiListener();
     this.cameraListener();
     this.microphoneListener();
-    // this.submitListener();
     this.onLoadListener();
+    this.preventSubmit();
+    this.lazyLoad();
   }
 
   addExitListener() {
@@ -78,11 +76,12 @@ export default class AppController {
     });
   }
 
-  addChangeListener() {
+  addMediaFileListener() {
     this.fileControl.addEventListener('change', async () => {
       const [file] = this.fileControl.files;
       const { link, type, timestamp } = await this.api.sendMedia(file);
-      this.gui.createMessage(`${this.url}/${link}`, type, timestamp);
+      this.gui.createMessage(link, type, timestamp);
+      await this.changeQuantity();
     });
   }
 
@@ -92,28 +91,15 @@ export default class AppController {
         if (document.querySelector('.files-window') !== null) return;
         const type = e.target.closest('.file').classList[1];
         const response = await this.api.takeSideMedia(type);
-        console.log(response);
+        this.body.append(this.gui.createFilesWindow(response));
+        await this.changeQuantity();
+        document.getElementById('close').addEventListener('click', () => {
+          this.body.querySelector('.files-window').remove();
+        });
+        this.lazyLoad();
       });
     });
   }
-
-  // async sendFile(file) {
-  //   this.name = file.name;
-  //   if (file.type.startsWith('image')) {
-  //     this.type = 'image';
-  //   } else if (file.type.startsWith('video')) {
-  //     this.type = 'video';
-  //   } else if (file.type.startsWith('audio')) {
-  //     this.type = 'audio';
-  //   }
-  //   const blob = URL.createObjectURL(file);
-  //   this.text = await new Response(blob).text();
-  //   const obj = {
-  //     name: this.name,
-  //     text: this.text,
-  //     type: this.type,
-  //   };
-  // }
 
   addPaperclipListener() {
     this.paperclip.addEventListener('click', async (e) => {
@@ -121,6 +107,10 @@ export default class AppController {
       e.stopPropagation();
       this.fileControl.dispatchEvent(new MouseEvent('click'));
     });
+  }
+
+  preventSubmit() {
+    this.form.addEventListener('submit', (e) => e.preventDefault());
   }
 
   addInputListener() {
@@ -137,7 +127,7 @@ export default class AppController {
         });
         this.gui.createMessage(text, type, timestamp);
         this.input.value = '';
-        // await this.changeQuantity();
+        await this.changeQuantity();
       }
     });
   }
@@ -155,50 +145,6 @@ export default class AppController {
       }
     });
   }
-
-  // addFilesListener() {
-  //   Array.from(this.body.querySelectorAll('.file')).forEach((file) => {
-  //     file.addEventListener('click', async () => {
-  //       if (document.querySelector('.files-window') !== null) return;
-  //       const type = file.querySelector('svg').id;
-  //       if (type === 'message' || type === 'link') {
-  //         this.array = await this.api.request('GET', {
-  //           text: `give-${type}`,
-  //           type,
-  //         });
-  //         this.body.append(this.gui.createFilesWindow(this.array));
-  //         document.getElementById('close').addEventListener('click', () => {
-  //           this.body.querySelector('.files-window').remove();
-  //         });
-  //       }
-  //       // await this.changeQuantity();
-  //     });
-  //   });
-  // }
-
-  // addMediaListener() {
-  //   Array.from(this.body.querySelectorAll('.file')).forEach((file) => {
-  //     file.addEventListener('click', async () => {
-  //       if (document.querySelector('.files-window') !== null) return;
-  //       const type = file.querySelector('svg').id;
-  //       if (type === 'video' || type === 'image' || type === 'audio') {
-  //         this.array = await this.api.request('GET', {
-  //           text: `give-${type}`,
-  //           type,
-  //         });
-  //         this.body.append(this.gui.createFilesWindow(this.array));
-  //         this.files = this.body.querySelector('.files-window');
-  //         document.getElementById('close').addEventListener('click', () => {
-  //           this.body.querySelector('.files-window').remove();
-  //         });
-  //         document.addEventListener('mouseover', (e) => {
-  //           this.lazyLoad(e);
-  //         });
-  //       }
-  //       // await this.changeQuantity();
-  //     });
-  //   });
-  // }
 
   cameraListener() {
     this.camera.addEventListener('click', async () => {
@@ -242,17 +188,10 @@ export default class AppController {
     this.recorder.addEventListener('stop', async () => {
       this.camera.classList.toggle('active');
       console.log('recording stopped');
-      const blob = new Blob(this.chunks);
-      this.src = URL.createObjectURL(blob);
 
-      const obj = {
-        name: 'video message',
-        text: this.src,
-        type: 'video',
-      };
-
-      const { text, type, timestamp } = await this.api.sendMedia(obj);
-      this.gui.createMessage(text, type, timestamp);
+      const { link, type, timestamp } = await this.api.sendMedia(this.chunks[0]);
+      this.gui.createMessage(link, type, timestamp);
+      await this.changeQuantity();
     });
 
     this.recorder.start();
@@ -278,17 +217,10 @@ export default class AppController {
     this.recorder.addEventListener('stop', async () => {
       this.microphone.classList.toggle('active');
       console.log('recording stopped');
-      const blob = new Blob(this.chunks);
-      this.src = URL.createObjectURL(blob);
 
-      const obj = {
-        name: 'voice message',
-        text: this.src,
-        type: 'audio',
-      };
-
-      const { text, type, timestamp } = await this.api.sendMedia(obj);
-      this.gui.createMessage(text, type, timestamp);
+      const { link, type, timestamp } = await this.api.sendMedia(this.chunks[0]);
+      this.gui.createMessage(link, type, timestamp);
+      await this.changeQuantity();
     });
 
     this.recorder.start();
@@ -304,10 +236,10 @@ export default class AppController {
 
     this.container.addEventListener('drop', async (e) => {
       this.data = e.dataTransfer;
-      this.file = this.data.files[0]; // линтер ругается на эту строчку, но на мой взгляд,
-      // она более читабельна, чем [this.file] = this.data.files
-      await this.sendFile(this.file);
-      // await this.changeQuantity();
+      const [file] = this.data.files;
+      const { link, type, timestamp } = await this.api.sendMedia(file);
+      this.gui.createMessage(link, type, timestamp);
+      await this.changeQuantity();
     });
   }
 
@@ -345,16 +277,16 @@ export default class AppController {
     this.settings.style.left = `${this.coords.left - 150}px`;
   }
 
-  // async changeQuantity() {
-  //   const types = ['message', 'link', 'image', 'video', 'audio'];
-  //   types.forEach(async (type) => {
-  //     const length = await this.api.giveLength(type);
-  //     const number = length[1];
-  //     const el = this.body.querySelector(`#${type}`).nextSibling;
-  //     el.textContent = '';
-  //     el.textContent = `${number} ${type}`;
-  //   });
-  // }
+  async changeQuantity() {
+    const types = ['message', 'link', 'image', 'video', 'audio'];
+    types.forEach(async (type) => {
+      const length = await this.api.giveLength(type);
+      const number = length[1];
+      const el = this.body.querySelector(`#${type}`).nextSibling;
+      el.textContent = '';
+      el.textContent = `${number} ${type}`;
+    });
+  }
 
   watchGeolocation() {
     if (navigator.geolocation) {
@@ -380,18 +312,16 @@ export default class AppController {
     }
   }
 
-  lazyLoad(e) {
-    this.arr = Array.from(this.body.querySelectorAll('.files-window__item'));
-    const index = this.arr.indexOf(e.target.closest('.files-window__item'));
-    if (index % 5 === 4 || index === 0) {
-      for (let i = 0; i < this.arr.indexOf(e.target.closest('.files-window__item')) + 5; i += 1) {
-        const element = this.arr[i].querySelector('img');
-        if (element !== null) {
-          this.arr[i].querySelector('img').src = this.arr[i].querySelector('img').src.replace('lazy', '');
-        } else {
-          this.arr[i].querySelector('source').src = this.arr[i].querySelector('source').src.replace('lazy', '');
-        }
-      }
-    }
+  lazyLoad() {
+    if (document.querySelector('.files-window__item') === null) return;
+    this.fileItems = document.querySelectorAll('.files-window__item');
+    let timer = 1000;
+    this.fileItems.forEach((item) => {
+      const elem = item.firstChild;
+      timer += 250;
+      setTimeout(() => {
+        elem.src = elem.dataset.src;
+      }, timer);
+    });
   }
 }

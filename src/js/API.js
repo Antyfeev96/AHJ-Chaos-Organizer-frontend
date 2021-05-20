@@ -108,7 +108,6 @@ export default class API {
         },
       );
       this.result = await this.response.json();
-      console.log(this.result);
       return this.result;
     } catch (error) {
       console.log(error);

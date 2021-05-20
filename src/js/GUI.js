@@ -342,17 +342,17 @@ export default class GUI {
           break;
         case 'video':
           this.windowContent.append(
-            this.createVideoItem(message.text, message.timestamp),
+            this.createVideoItem(message.link, message.timestamp),
           );
           break;
         case 'image':
           this.windowContent.append(
-            this.createImageItem(message.text, message.timestamp),
+            this.createImageItem(message.link, message.timestamp),
           );
           break;
         case 'audio':
           this.windowContent.append(
-            this.createAudioItem(message.text, message.timestamp),
+            this.createAudioItem(message.link, message.timestamp),
           );
           break;
         default:
@@ -379,42 +379,38 @@ export default class GUI {
     return this.item;
   }
 
-  createImageItem(text, timestamp) {
+  createImageItem(link, timestamp) {
     this.item = document.createElement('div');
     this.item.className = 'files-window__item';
     this.itemContent = document.createElement('img');
-    this.itemContent.src = `lazy${text}`;
+    this.itemContent.dataset.src = link;
     this.itemTime = document.createElement('span');
     this.itemTime.textContent = timestamp;
     this.item.append(this.itemContent, this.itemTime);
     return this.item;
   }
 
-  createVideoItem(text, timestamp) {
+  createVideoItem(link, timestamp) {
     this.item = document.createElement('div');
     this.item.className = 'files-window__item';
-    this.video = document.createElement('video');
-    this.video.controls = 'controls';
-    this.videoContent = document.createElement('source');
-    this.videoContent.src = text;
-    this.video.append(this.videoContent);
+    this.itemContent = document.createElement('video');
+    this.itemContent.controls = 'controls';
+    this.itemContent.dataset.src = link;
     this.itemTime = document.createElement('span');
     this.itemTime.textContent = timestamp;
-    this.item.append(this.video, this.itemTime);
+    this.item.append(this.itemContent, this.itemTime);
     return this.item;
   }
 
-  createAudioItem(text, timestamp) {
+  createAudioItem(link, timestamp) {
     this.item = document.createElement('div');
     this.item.className = 'files-window__item';
-    this.audio = document.createElement('audio');
-    this.audio.controls = 'controls';
-    this.audioContent = document.createElement('source');
-    this.audioContent.src = text;
-    this.audio.append(this.audioContent);
+    this.itemContent = document.createElement('audio');
+    this.itemContent.controls = 'controls';
+    this.itemContent.dataset.src = link;
     this.itemTime = document.createElement('span');
     this.itemTime.textContent = timestamp;
-    this.item.append(this.audio, this.itemTime);
+    this.item.append(this.itemContent, this.itemTime);
     return this.item;
   }
 
