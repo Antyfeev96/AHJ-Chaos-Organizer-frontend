@@ -14,7 +14,7 @@ export default class API {
           this.formData.set('type', type);
 
           this.response = await fetch(
-            `${this.url}/?text=${this.formData.get('text')}&type=${this.formData.get('type')}`,
+            `${this.url}/?text=${this.formData.get('text')}&type=${this.formData.get('type')}/`,
             {
               method,
               headers: {
@@ -36,7 +36,7 @@ export default class API {
           this.formData.set('type', type);
 
           this.response = await fetch(
-            `${this.url}/?text=${this.formData.get('text')}&type=${this.formData.get('type')}`,
+            `${this.url}/?text=${this.formData.get('text')}&type=${this.formData.get('type')}/`,
             {
               method,
               headers: {
@@ -81,7 +81,7 @@ export default class API {
       this.formData.set('array', array);
 
       this.response = await fetch(
-        `${this.url}/?array=${this.formData.get('array')}`,
+        `${this.url}/?array=${this.formData.get('array')}/`,
         {
           method: 'POST',
           headers: {
@@ -103,7 +103,7 @@ export default class API {
       this.formData.set('media', type);
 
       this.response = await fetch(
-        `${this.url}/?media=${this.formData.get('media')}`,
+        `${this.url}/?media=${this.formData.get('media')}/`,
         {
           method: 'POST',
           headers: {
@@ -124,7 +124,7 @@ export default class API {
       const formData = new FormData();
       formData.append('init', 'init');
       this.response = await fetch(
-        `${this.url}/?init=${this.formData.get('init')}`,
+        `${this.url}/?init=${this.formData.get('init')}/`,
         {
           method: 'POST',
           mode: 'cors',
