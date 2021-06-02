@@ -28,6 +28,7 @@ export default class AppController {
     this.form = this.body.querySelector('#form');
     this.submit = this.body.querySelector('#submit');
     await this.changeQuantity();
+    await this.initLoading();
     this.watchGeolocation();
   }
 
@@ -323,5 +324,10 @@ export default class AppController {
         elem.src = elem.dataset.src;
       }, timer);
     });
+  }
+
+  async initLoading() {
+    const data = await this.api.initLoading();
+    console.log(data);
   }
 }

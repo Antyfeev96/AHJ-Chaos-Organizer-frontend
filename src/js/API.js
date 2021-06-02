@@ -113,4 +113,21 @@ export default class API {
       console.log(error);
     }
   }
+
+  async initLoading() {
+    try {
+      const formData = new FormData();
+      formData.append('init', 'init');
+      this.response = await fetch(
+        `${this.url}/?init=${this.formData.get('init')}`,
+        {
+          method: 'POST',
+        },
+      );
+      this.result = await this.response.json();
+      return this.result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
