@@ -20,6 +20,7 @@ export default class API {
               headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
               },
+              mode: 'cors',
             },
           );
           this.result = await this.response.json();
@@ -41,6 +42,7 @@ export default class API {
               headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
               },
+              mode: 'cors',
             },
           );
           this.result = await this.response.json();
@@ -63,6 +65,7 @@ export default class API {
         {
           method: 'POST',
           body: formData,
+          mode: 'cors',
         },
       );
       this.result = await this.response.json();
@@ -84,6 +87,7 @@ export default class API {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
+          mode: 'cors',
         },
       );
       this.result = await this.response.json();
@@ -105,6 +109,7 @@ export default class API {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
           },
+          mode: 'cors',
         },
       );
       this.result = await this.response.json();
@@ -122,6 +127,7 @@ export default class API {
         `${this.url}/?init=${this.formData.get('init')}`,
         {
           method: 'POST',
+          mode: 'cors',
         },
       );
       this.result = await this.response.json();
