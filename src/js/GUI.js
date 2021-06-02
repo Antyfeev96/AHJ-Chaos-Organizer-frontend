@@ -228,7 +228,7 @@ export default class GUI {
   createSectionExit() {
     this.sectionExitEl = document.createElement('div');
     this.sectionExitEl.className = 'section__exit';
-    this.sectionExitEl.textContent = '🞨';
+    this.sectionExitEl.textContent = '✘';
     return this.sectionExitEl;
   }
 
@@ -323,7 +323,7 @@ export default class GUI {
     this.span1 = document.createElement('span');
     this.span1.textContent = 'Список файлов';
     this.span2 = document.createElement('span');
-    this.span2.textContent = '🞨';
+    this.span2.textContent = '✘';
     this.span2.id = 'close';
     this.windowHeader.append(this.span1, this.span2);
     return this.windowHeader;
