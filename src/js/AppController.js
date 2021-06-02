@@ -12,7 +12,7 @@ export default class AppController {
 
   async initConstants() {
     this.body = document.body;
-    this.url = 'https://ahj-chaos-organizer-backend.herokuapp.com';
+    this.url = 'http://localhost:7070';
     this.container = this.body.querySelector('.container');
     this.exitButton = this.body.querySelector('.section__exit');
     this.main = this.body.querySelector('.main');
@@ -80,8 +80,8 @@ export default class AppController {
   addMediaFileListener() {
     this.fileControl.addEventListener('change', async () => {
       const [file] = this.fileControl.files;
-      const { link, type, timestamp } = await this.api.sendMedia(file);
-      this.gui.createMessage(link, type, timestamp);
+      const { link, type, dateObj } = await this.api.sendMedia(file);
+      this.gui.createMessage(link, type, dateObj.timestamp);
       await this.changeQuantity();
     });
   }
@@ -121,12 +121,12 @@ export default class AppController {
         const {
           text,
           type,
-          timestamp,
+          dateObj,
         } = await this.api.request('POST', {
           type: this.type,
           text: this.input.value,
         });
-        this.gui.createMessage(text, type, timestamp);
+        this.gui.createMessage(text, type, dateObj.timestamp);
         this.input.value = '';
         await this.changeQuantity();
       }
@@ -190,8 +190,8 @@ export default class AppController {
       this.camera.classList.toggle('active');
       console.log('recording stopped');
 
-      const { link, type, timestamp } = await this.api.sendMedia(this.chunks[0]);
-      this.gui.createMessage(link, type, timestamp);
+      const { link, type, dateObj } = await this.api.sendMedia(this.chunks[0]);
+      this.gui.createMessage(link, type, dateObj.timestamp);
       await this.changeQuantity();
     });
 
@@ -219,8 +219,8 @@ export default class AppController {
       this.microphone.classList.toggle('active');
       console.log('recording stopped');
 
-      const { link, type, timestamp } = await this.api.sendMedia(this.chunks[0]);
-      this.gui.createMessage(link, type, timestamp);
+      const { link, type, dateObj } = await this.api.sendMedia(this.chunks[0]);
+      this.gui.createMessage(link, type, dateObj.timestamp);
       await this.changeQuantity();
     });
 
@@ -238,8 +238,8 @@ export default class AppController {
     this.container.addEventListener('drop', async (e) => {
       this.data = e.dataTransfer;
       const [file] = this.data.files;
-      const { link, type, timestamp } = await this.api.sendMedia(file);
-      this.gui.createMessage(link, type, timestamp);
+      const { link, type, dateObj } = await this.api.sendMedia(file);
+      this.gui.createMessage(link, type, dateObj.timestamp);
       await this.changeQuantity();
     });
   }
@@ -328,6 +328,32 @@ export default class AppController {
 
   async initLoading() {
     const data = await this.api.initLoading();
-    console.log(data);
+    const newData = [];
+    for (const item in data) {
+      if (Object.prototype.hasOwnProperty.call(data, item)) {
+        for (const obj of data[item]) {
+          newData.push(obj);
+        }
+      }
+    }
+    const sortedData = newData.sort((a, b) => a.dateObj.date - b.dateObj.date);
+    console.log(sortedData);
+    sortedData.forEach(async (object) => {
+      switch (object.type) {
+        default:
+          throw new Error('Неверный тип данных!');
+        case 'link':
+        case 'message':
+          this.gui.createMessage(object.text, object.type, object.dateObj.timestamp);
+          this.input.value = '';
+          break;
+        case 'video':
+        case 'audio':
+        case 'image':
+          this.gui.createMessage(object.link, object.type, object.dateObj.timestamp);
+          break;
+      }
+    });
+    await this.changeQuantity();
   }
 }

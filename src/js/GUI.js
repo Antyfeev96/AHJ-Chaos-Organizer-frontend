@@ -337,22 +337,22 @@ export default class GUI {
         case 'link':
         case 'message':
           this.windowContent.append(
-            this.createTextItem(message.text, message.timestamp, message.type),
+            this.createTextItem(message.text, message.dateObj.timestamp, message.type),
           );
           break;
         case 'video':
           this.windowContent.append(
-            this.createVideoItem(message.link, message.timestamp),
+            this.createVideoItem(message.link, message.dateObj.timestamp),
           );
           break;
         case 'image':
           this.windowContent.append(
-            this.createImageItem(message.link, message.timestamp),
+            this.createImageItem(message.link, message.dateObj.timestamp),
           );
           break;
         case 'audio':
           this.windowContent.append(
-            this.createAudioItem(message.link, message.timestamp),
+            this.createAudioItem(message.link, message.dateObj.timestamp),
           );
           break;
         default:
