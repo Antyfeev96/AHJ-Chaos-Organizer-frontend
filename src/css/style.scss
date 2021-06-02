@@ -172,6 +172,10 @@
       color: grey;
       font-size: 26px;
 
+      &::after {
+        content: '\2716';
+      }
+
       &:hover {
         cursor: pointer;
         color: black;
@@ -281,9 +285,16 @@
     font-weight: bold;
     border-bottom: 2px solid grey;
 
-    & span + span:hover {
-      cursor: pointer;
-      transform: scale(1.3);
+    & #close {
+
+      &:hover {
+        cursor: pointer;
+        transform: scale(1.3);
+      }
+
+      &::after {
+        content: '\2716';
+      }
     }
   }
 
