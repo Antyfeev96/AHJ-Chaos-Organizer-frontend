@@ -62,6 +62,7 @@
       background: url('../images/background.jpg') no-repeat;
       background-size: cover;
       overflow-y: auto;
+      overflow-x: hidden;
 
       .message {
         padding: 15px;
@@ -88,7 +89,8 @@
         }
 
         &__content {
-          text-align: justify;
+          display: flex;
+          word-break: break-word;
         }
 
         &__status {
@@ -314,6 +316,11 @@
     border: 2px solid grey;
     border-radius: 10px;
     font-size: 16px;
+
+    & span:first-child {
+      width: 80%;
+      word-wrap: break-word;
+    }
 
     img {
       width: 100px;

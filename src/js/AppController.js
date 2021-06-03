@@ -126,7 +126,7 @@ export default class AppController {
           type: this.type,
           text: this.input.value,
         });
-        this.gui.createMessage(text, type, dateObj.timestamp);
+        await this.gui.createMessage(text, type, dateObj.timestamp);
         this.input.value = '';
         await this.changeQuantity();
       }
@@ -191,7 +191,7 @@ export default class AppController {
       console.log('recording stopped');
 
       const { link, type, dateObj } = await this.api.sendMedia(this.chunks[0]);
-      this.gui.createMessage(link, type, dateObj.timestamp);
+      await this.gui.createMessage(link, type, dateObj.timestamp);
       await this.changeQuantity();
     });
 
@@ -220,7 +220,7 @@ export default class AppController {
       console.log('recording stopped');
 
       const { link, type, dateObj } = await this.api.sendMedia(this.chunks[0]);
-      this.gui.createMessage(link, type, dateObj.timestamp);
+      await this.gui.createMessage(link, type, dateObj.timestamp);
       await this.changeQuantity();
     });
 
@@ -239,7 +239,7 @@ export default class AppController {
       this.data = e.dataTransfer;
       const [file] = this.data.files;
       const { link, type, dateObj } = await this.api.sendMedia(file);
-      this.gui.createMessage(link, type, dateObj.timestamp);
+      await this.gui.createMessage(link, type, dateObj.timestamp);
       await this.changeQuantity();
     });
   }
@@ -337,20 +337,19 @@ export default class AppController {
       }
     }
     const sortedData = newData.sort((a, b) => a.dateObj.date - b.dateObj.date);
-    console.log(sortedData);
     sortedData.forEach(async (object) => {
       switch (object.type) {
         default:
           throw new Error('Неверный тип данных!');
         case 'link':
         case 'message':
-          this.gui.createMessage(object.text, object.type, object.dateObj.timestamp);
+          await this.gui.createMessage(object.text, object.type, object.dateObj.timestamp);
           this.input.value = '';
           break;
         case 'video':
         case 'audio':
         case 'image':
-          this.gui.createMessage(object.link, object.type, object.dateObj.timestamp);
+          await this.gui.createMessage(object.link, object.type, object.dateObj.timestamp);
           break;
       }
     });
