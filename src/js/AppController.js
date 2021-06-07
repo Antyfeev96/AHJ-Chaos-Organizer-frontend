@@ -80,7 +80,7 @@ export default class AppController {
     this.fileControl.addEventListener('change', async () => {
       const [file] = this.fileControl.files;
       const { link, type, dateObj } = await this.api.sendMedia(file);
-      this.gui.createMessage(link, type, dateObj.timestamp);
+      await this.gui.createMessage(link, type, dateObj.timestamp);
       await this.changeQuantity();
     });
   }
