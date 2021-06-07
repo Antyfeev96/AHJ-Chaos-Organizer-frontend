@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 export default class API {
   constructor() {
-    this.url = 'http://localhost:7070';
+    this.url = 'https://ahj-chaos-organizer-backend.herokuapp.com';
   }
 
   async request(method, obj) {

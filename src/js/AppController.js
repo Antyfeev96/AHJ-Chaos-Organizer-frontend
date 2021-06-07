@@ -12,7 +12,6 @@ export default class AppController {
 
   async initConstants() {
     this.body = document.body;
-    this.url = 'http://localhost:7070';
     this.container = this.body.querySelector('.container');
     this.exitButton = this.body.querySelector('.section__exit');
     this.main = this.body.querySelector('.main');
